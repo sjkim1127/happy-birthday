@@ -129,8 +129,6 @@ button:focus-visible { outline: 1px dotted #141414; outline-offset: -4px; }
   background: #18171c; color: #ff756b; font-size: clamp(1.3rem, 2.1vw, 1.85rem);
 }
 .timer-zone { margin-top: 8px; color: #504d42; font-size: .84rem; }
-.alert { font-size: .9rem; }
-.alert .icon { width: 34px; height: 34px; }
 #mineWin .body { background: #d0cfc6; }
 .mine-top { border-color: #8e8c80 #fbfaf1 #fbfaf1 #8e8c80; }
 .mine-top .led { color: #ff756b; background: #18171c; }

@@ -48,9 +48,6 @@
   .led { background: #000; color: #ff2b1c; font-family: DSEG7, monospace; font-weight: normal; text-shadow: 0 0 6px rgba(255, 43, 28, .7); }
   #countdown { display: block; margin-top: 10px; }
 
-  /* 오류 창 */
-  .alert { display: flex; align-items: center; gap: 12px; text-align: left; line-height: 1.6; }
-
   /* 지뢰찾기 */
   .mine-top { display: flex; align-items: center; justify-content: space-between; padding: 6px; margin-bottom: 10px; border: 2px solid; }
   .mine-top .led { padding: 5px 6px; font-size: 20px; }
@@ -76,7 +73,7 @@
   #scareEnd .buttons { margin-top: 0; }
 
 </style>
-<link rel="stylesheet" href="desktop.css?v=3">
+<link rel="stylesheet" href="desktop.css?v=4">
 </head>
 <body>
 <picture class="wallpaper" aria-hidden="true">
@@ -135,19 +132,6 @@
         <p id="timerLabel">생일 시작까지</p>
         <strong id="countdown" class="led">--:--:--</strong>
         <p class="timer-zone">한국 시간 기준</p>
-      </div>
-    </section>
-
-    <section class="window" id="errorWin">
-      <div class="titlebar">
-        <img class="icon app-icon" src="assets/icons/warning_24_color.svg" alt="" draggable="false">
-        <h2 tabindex="-1" data-shortcut="나이 확인">Error</h2>
-        <button class="ctl minimize" aria-label="창 최소화"><img class="icon" src="assets/icons/subtract_16_regular.svg" alt="" draggable="false"></button>
-        <button class="ctl close" aria-label="창 닫기"><img class="icon" src="assets/icons/dismiss_16_regular.svg" alt="" draggable="false"></button>
-      </div>
-      <div class="body">
-        <div class="alert"><img class="icon" src="assets/icons/warning_24_color.svg" alt="" draggable="false"><p id="errorText" aria-live="polite">나이 확인 오류:<br>만 22세 외의 숫자는<br>찾을 수 없습니다.</p></div>
-        <div class="buttons"><button class="btn" id="agree">인정</button></div>
       </div>
     </section>
 
@@ -498,12 +482,6 @@
     playingUntil = t;
   }
   $('song').addEventListener('click', playSong);
-
-  // 오류 창
-  $('agree').addEventListener('click', () => {
-    $('errorText').innerHTML = '확인 완료.<br>당신은 만 22세입니다.<br>반박은 받지 않습니다.';
-    burst(innerWidth / 2, innerHeight / 2, 60);
-  });
 
   // 설문에서 '늙었다'를 선택하면 토끼 추격 영상 재생
   const scare = $('scare');
