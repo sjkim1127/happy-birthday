@@ -127,9 +127,20 @@
   }
   @keyframes float { to { transform: translateY(-8px); } }
 
+  /* 설문 */
+  #pollResult:not(:empty) { margin-top: 14px; font: 30px Galmuri14, monospace; color: #e0197d; }
+  #scare {
+    position: fixed; inset: 0; z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+    padding: 16px; background: #000; cursor: pointer;
+  }
+  #scare svg { width: min(94vw, 62vh); animation: lunge .45s ease-out both, shake .12s linear .45s 8; }
+  #scare p { font: 34px Galmuri14, monospace; color: #ff2b1c; }
+  @keyframes lunge { from { transform: scale(.15); } 70% { transform: scale(1.15); } to { transform: scale(1); } }
+  @keyframes shake { 25% { translate: -9px 3px; } 75% { translate: 9px -3px; } }
+
   /* 넓은 화면에서만 보이는 바닥 스티커 */
   .lawn { display: none; }
-  @media (min-width: 1000px) and (min-height: 800px) { .lawn { display: block; } }
+  @media (min-width: 1000px) and (min-height: 900px) { .lawn { display: block; } }
   .lawn .sticker { position: fixed; }
 
   /* 작업 표시줄 */
@@ -150,9 +161,9 @@
     .col:last-child { padding-top: 20px; }
   }
   @media (max-width: 999px) {
-    #party { order: 1; } #timerWin { order: 2; } #errorWin { order: 3; } #mineWin { order: 4; } #loadWin { order: 5; }
+    #party { order: 1; } #timerWin { order: 2; } #pollWin { order: 3; } #errorWin { order: 4; } #mineWin { order: 5; } #loadWin { order: 6; }
   }
-  @media (prefers-reduced-motion: reduce) { .sticker, .flame { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .sticker, .flame, #scare svg { animation: none !important; } }
 </style>
 </head>
 <body>
@@ -190,6 +201,18 @@
         <div class="buttons"><button class="btn" id="agree">인정</button></div>
       </div>
       <canvas class="sticker" data-emoji="🐠" style="right:-16px; bottom:-38px; --s:76px"></canvas>
+    </section>
+
+    <section class="window" id="pollWin">
+      <div class="titlebar"><b>설문조사.exe</b><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="body">
+        <p>Q. 만 22세 김성주는?</p>
+        <div class="buttons">
+          <button class="btn" id="old">늙었다</button>
+          <button class="btn" id="young">젊다</button>
+        </div>
+        <p id="pollResult" aria-live="polite"></p>
+      </div>
     </section>
   </div>
 
@@ -257,6 +280,28 @@
   <span id="clock"></span>
 </footer>
 <canvas id="confetti"></canvas>
+
+<div id="scare" role="dialog" aria-modal="true" aria-label="무서운 그림" hidden>
+  <svg viewBox="0 0 400 480" aria-hidden="true">
+    <defs>
+      <radialGradient id="skin" cx=".5" cy=".42" r=".6"><stop offset="0" stop-color="#e9eadf"/><stop offset=".7" stop-color="#8d9186"/><stop offset="1" stop-color="#1a1c18"/></radialGradient>
+      <radialGradient id="hole"><stop offset=".6" stop-color="#000"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    </defs>
+    <path d="M200 8C70 8 34 130 42 235C50 350 120 472 200 472S350 350 358 235C366 130 330 8 200 8Z" fill="url(#skin)"/>
+    <g fill="url(#hole)"><ellipse cx="128" cy="180" rx="66" ry="78"/><ellipse cx="274" cy="174" rx="72" ry="86"/></g>
+    <g fill="#ff1500"><circle cx="136" cy="188" r="8"/><circle cx="264" cy="184" r="8"/></g>
+    <g stroke="#000" stroke-linecap="round" fill="none">
+      <path d="M112 235Q100 300 116 360M140 244V290M288 240Q304 310 286 372M258 250V300" stroke-width="7"/>
+      <path d="M200 30L182 82L204 108L190 134M72 120L104 134" stroke-width="3"/>
+    </g>
+    <path d="M200 236L186 276H214Z" fill="#111"/>
+    <path d="M86 322Q200 362 314 316Q290 448 200 450Q112 446 86 322Z" fill="#120000"/>
+    <path d="M90 325L112 372L128 336L148 392L166 345L188 402L204 346L224 398L242 343L262 386L276 334L294 366L310 319Q200 360 90 325Z" fill="#d9d4b4"/>
+    <path d="M118 407L140 380L156 425L178 392L196 440L216 394L236 428L254 386L278 405Q244 449 200 450Q150 448 118 407Z" fill="#d9d4b4"/>
+  </svg>
+  <p>늙었다고...?</p>
+  <button class="btn" id="sorry">잘못했어요</button>
+</div>
 
 <script>
   const $ = id => document.getElementById(id);
@@ -466,6 +511,28 @@
   $('agree').addEventListener('click', () => {
     $('errorText').innerHTML = '확인 완료.<br>당신은 만 22세입니다.<br>반박은 받지 않습니다.';
     burst(innerWidth / 2, innerHeight / 2, 60);
+  });
+
+  // 설문
+  const scare = $('scare');
+  const pollResult = $('pollResult');
+  $('old').addEventListener('click', () => {
+    pollResult.textContent = '';
+    pieces = [];
+    scare.hidden = false;
+    $('sorry').focus();
+  });
+  function closeScare() {
+    if (scare.hidden) return;
+    scare.hidden = true;
+    $('young').focus();
+  }
+  scare.addEventListener('click', closeScare);
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeScare(); });
+  $('young').addEventListener('click', e => {
+    pollResult.textContent = '사랑해 💖';
+    const r = e.currentTarget.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top, 120);
   });
 
   // 지뢰찾기 (8×8, 지뢰 8개)
