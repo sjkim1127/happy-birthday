@@ -2,10 +2,10 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>김성주, 생일 축하해! 🎂</title>
 <meta name="description" content="김성주 만 22세 생일 파티 — 촛불을 끄고 소원을 빌어보세요">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+<link rel="icon" type="image/svg+xml" href="assets/icons/gift_24_color.svg">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
   @font-face {
@@ -17,49 +17,13 @@
     --title: 'Trebuchet MS', Tahoma, Dotum, '돋움', 'Nanum Gothic', sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { min-height: 100vh; min-height: 100dvh; overflow-x: hidden; font-family: var(--ui); font-size: 13px; color: #000; background: #3f7fe0; }
+  body { min-height: 100vh; min-height: 100dvh; overflow-x: hidden; font: 1rem var(--ui); color: #173252; background: #3f7fe0; }
   [hidden] { display: none !important; }
 
-  /* 배경: 하늘과 초록 언덕 */
-  .wallpaper { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
-
-  .desk { display: flex; flex-direction: column; align-items: center; gap: 44px; padding: 32px 20px 100px; max-width: 1180px; margin: 0 auto; }
-  .col { display: contents; }
-
-  /* 창 */
-  .window { position: relative; width: 100%; max-width: 350px; padding: 0 3px 3px; background: #0855dd; border-radius: 8px 8px 0 0; box-shadow: 0 10px 26px rgba(0, 0, 0, .38); }
-  .titlebar {
-    display: flex; align-items: center; gap: 2px; height: 31px; margin: 0 -3px; padding: 0 5px 0 9px; border-radius: 8px 8px 0 0;
-    color: #fff; font: bold 14px var(--title); text-shadow: 1px 1px 1px #0f1089;
-    background: linear-gradient(#0997ff, #0053ee 9%, #0050ee 40%, #0066ff 88%, #0066ff 93%, #005bff 95%, #003dd7);
-    cursor: grab; user-select: none; -webkit-user-select: none; touch-action: none;
-  }
-  .titlebar b { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ctl {
-    display: grid; place-items: center; width: 21px; height: 21px; border: 1px solid #fff; border-radius: 4px;
-    font: bold 14px/1 var(--title); color: #fff; background: radial-gradient(circle at 30% 25%, #7aa7ff, #2a63e0 55%, #1941a5);
-  }
-  button.ctl { cursor: pointer; }
-  button.close, #scareClose { background: radial-gradient(circle at 30% 25%, #f6b39b, #e0532c 55%, #a92a0c); }
-  .ctl:hover { filter: brightness(1.15); }
-  .body { padding: 14px; text-align: center; word-break: keep-all; background: #ece9d8; }
-  .btn {
-    min-width: 76px; font: 13px var(--ui); color: #000; padding: 6px 14px; cursor: pointer;
-    background: linear-gradient(#fff, #f3f2ec 70%, #d8d3c6); border: 1px solid #003c74; border-radius: 4px;
-  }
-  .btn:hover { box-shadow: inset 0 0 0 2px #f8b636; }
-  .btn:active { background: #dedbd0; box-shadow: inset 1px 1px 3px rgba(0, 0, 0, .25); }
-  button:focus-visible { outline: 1px dotted #000; outline-offset: -4px; }
-  .buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
-  .sunken { background: #fff; border: 1px solid #7f9db9; }
-
-  /* 메인 창 */
-  #party .body { padding-top: 18px; }
-  .age { display: inline-block; padding: 4px 14px; background: #ffffe1; border: 1px solid #000; border-radius: 8px; box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); font-weight: bold; }
-  h1 { margin-top: 12px; font: 800 32px/1.35 var(--title); color: #003399; text-shadow: 1px 1px 0 #fff, 3px 3px 5px rgba(0, 51, 153, .25); }
-  #message { margin-top: 10px; min-height: 3em; line-height: 1.5; font-size: 14px; }
-
-  .cake { position: relative; width: 270px; height: 220px; margin: 4px auto 0; }
+  /* 생일 케이크와 촛불 */
+  .age { display: inline-block; font-weight: bold; }
+  #message { line-height: 1.5; }
+  .cake { position: relative; height: 220px; margin: 4px auto 0; }
   .layer { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 18px 18px 10px 10px; box-shadow: inset -22px 0 26px rgba(0, 0, 0, .18), inset 18px 0 20px rgba(255, 255, 255, .25); }
   .layer::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 28px; border-radius: 18px 18px 0 0;
@@ -67,8 +31,8 @@
       radial-gradient(circle at 15px 18px, var(--icing) 14px, transparent 15px) 0 0 / 30px 34px repeat-x,
       linear-gradient(var(--icing) 18px, transparent 18px);
   }
-  .bottom { bottom: 14px; width: 246px; height: 82px; background: #d9608f; --icing: #fff1f6; }
-  .top { bottom: 94px; width: 176px; height: 64px; background: #f595ba; --icing: #fff6cc; }
+  .bottom { bottom: 14px; height: 82px; --icing: #fff1f6; }
+  .top { bottom: 94px; height: 64px; --icing: #fff6cc; }
   .plate { position: absolute; bottom: 0; left: 0; width: 100%; height: 18px; border-radius: 50%; background: linear-gradient(#fff, #aeb6c8); box-shadow: 0 3px 5px rgba(0, 0, 0, .25); }
   .candles { position: absolute; bottom: 156px; left: 0; right: 0; display: flex; justify-content: center; gap: 4px; }
   .candle { position: relative; width: 28px; height: 66px; border: 0; background: none; cursor: pointer; }
@@ -83,128 +47,122 @@
 
   /* 타이머, 지뢰찾기의 빨간 숫자 */
   .led { background: #000; color: #ff2b1c; font-family: DSEG7, monospace; font-weight: normal; text-shadow: 0 0 6px rgba(255, 43, 28, .7); }
-  #countdown { display: block; margin-top: 10px; padding: 14px 4px; font-size: 34px; }
+  #countdown { display: block; margin-top: 10px; }
 
   /* 오류 창 */
   .alert { display: flex; align-items: center; gap: 12px; text-align: left; line-height: 1.6; }
-  .alert canvas { width: 44px; height: 44px; flex: none; }
 
   /* 지뢰찾기 */
-  #mineWin .body { background: #c0c0c0; }
-  .mine-top { display: flex; align-items: center; justify-content: space-between; padding: 6px; margin-bottom: 10px; border: 2px solid; border-color: #808080 #fff #fff #808080; }
+  .mine-top { display: flex; align-items: center; justify-content: space-between; padding: 6px; margin-bottom: 10px; border: 2px solid; }
   .mine-top .led { padding: 5px 6px; font-size: 20px; }
   #face { min-width: 0; width: 38px; height: 38px; padding: 0; font-size: 20px; }
-  .board { display: grid; grid-template-columns: repeat(8, 30px); justify-content: center; }
+  .board { display: grid; justify-content: center; }
   .cell {
-    width: 30px; height: 30px; font: bold 15px var(--ui); background: #c0c0c0; cursor: pointer;
-    border: 3px solid; border-color: #fff #808080 #808080 #fff; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+    font: bold 15px var(--ui); cursor: pointer;
+    border: 3px solid; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
   }
   .cell:active { border-width: 1px; }
-  .cell.open { border: 1px solid #909090; cursor: default; }
-  .cell.boom { background: #ff2b1c; }
+  .cell.open { border-width: 1px; cursor: default; }
   #flagMode[aria-pressed="true"] { background: #c9ddff; box-shadow: inset 1px 1px 3px rgba(0, 0, 0, .35); }
   #mineText { margin-top: 8px; }
 
   /* 로딩 */
-  .progress { display: flex; gap: 2px; height: 22px; margin: 12px 0; padding: 3px; border-radius: 5px; border-color: #686868; }
+  .progress { display: flex; gap: 2px; height: 22px; margin: 12px 0; padding: 3px; border-radius: 5px; }
   .progress i { flex: 1; }
-  .progress i.on { background: linear-gradient(#c8f5c9, #31d23a 45%, #28c231 65%, #9be89f); }
-
-  /* 스티커 */
-  .sticker {
-    position: absolute; z-index: 2; width: var(--s, 64px); height: var(--s, 64px); cursor: grab; touch-action: none;
-    filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, .35));
-    animation: float 2.4s ease-in-out infinite alternate;
-  }
-  @keyframes float { to { transform: translateY(-8px); } }
 
   /* 설문 */
   #pollResult:not(:empty) { margin-top: 14px; font: 800 28px var(--title); color: #e0197d; }
-  #scare { position: fixed; inset: 0; z-index: 3000; background: #000; }
+  #scare { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; border: 0; background: #000; }
+  #scare::backdrop { background: #000; }
   #chase { width: 100%; height: 100%; display: block; }
   #scareClose { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; font-size: 22px; }
   #scareEnd { position: absolute; inset: auto 0 12%; display: flex; flex-direction: column; align-items: center; gap: 14px; }
   #scareEnd p { font: 800 32px var(--title); color: #ff2b1c; }
   #scareEnd .buttons { margin-top: 0; }
 
-  /* 넓은 화면에서만 보이는 바닥 스티커 */
-  .lawn { display: none; }
-  @media (min-width: 1000px) and (min-height: 900px) { .lawn { display: block; } }
-  .lawn .sticker { position: fixed; }
-
-  /* 작업 표시줄 */
-  .taskbar {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: stretch;
-    height: calc(40px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
-    background: linear-gradient(#1f2f86, #3165c4 3%, #4490e6 9%, #2b71e0 15%, #235bd6 22%, #245ddb 55%, #2563e0 87%, #1d4fb8 95%, #1941a5);
-  }
-  #start {
-    display: flex; align-items: center; gap: 7px; padding: 0 26px 0 12px; border: 0; border-radius: 0 16px 16px 0; cursor: pointer;
-    color: #fff; font: italic bold 18px var(--title); text-shadow: 1px 1px 2px rgba(0, 0, 0, .6);
-    background: linear-gradient(#37822f, #6fc065 8%, #429b3d 22%, #3a963a 70%, #4aad45 88%, #25611f);
-    box-shadow: inset -6px 0 10px rgba(0, 0, 0, .25), 2px 0 4px rgba(0, 0, 0, .35);
-  }
-  #start:hover { filter: brightness(1.1); }
-  #start canvas { width: 24px; height: 24px; }
-  #clock {
-    display: grid; place-items: center; padding: 0 16px; color: #fff; border-left: 1px solid #092e8c;
-    background: linear-gradient(#0c59b9, #18b5f2 9%, #1290e8 20%, #0d8dea 63%, #1393ee 90%, #095bc9);
-    box-shadow: inset 1px 0 1px #18bbff;
-  }
-
-  #confetti { position: fixed; inset: 0; z-index: 2000; pointer-events: none; }
-
-  @media (min-width: 1000px) {
-    .desk { flex-direction: row; align-items: flex-start; justify-content: center; gap: 44px; }
-    .col { display: flex; flex: 1; flex-direction: column; align-items: center; gap: 48px; max-width: 350px; }
-    .col:first-child { padding-top: 56px; }
-    .col:last-child { padding-top: 20px; }
-  }
-  @media (max-width: 999px) {
-    #party { order: 1; } #timerWin { order: 2; } #pollWin { order: 3; } #errorWin { order: 4; } #mineWin { order: 5; } #loadWin { order: 6; }
-  }
-  @media (prefers-reduced-motion: reduce) { .sticker, .flame { animation: none; } }
 </style>
+<link rel="stylesheet" href="desktop.css">
 </head>
 <body>
-<svg class="wallpaper" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-  <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2463d6"/><stop offset=".75" stop-color="#b9dcff"/></linearGradient>
-    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ad12f"/><stop offset="1" stop-color="#2f6b0c"/></linearGradient>
-    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12"/></filter>
-  </defs>
-  <rect width="1200" height="800" fill="url(#sky)"/>
-  <g fill="#fff" opacity=".85" filter="url(#soft)">
-    <ellipse cx="230" cy="150" rx="130" ry="34"/><ellipse cx="290" cy="122" rx="70" ry="40"/>
-    <ellipse cx="640" cy="90" rx="110" ry="24"/><ellipse cx="920" cy="230" rx="160" ry="36"/><ellipse cx="870" cy="200" rx="70" ry="38"/>
-    <ellipse cx="500" cy="380" rx="180" ry="26"/><ellipse cx="1110" cy="80" rx="90" ry="26"/>
-  </g>
-  <path d="M0 560 C220 450 420 470 640 540 C860 610 1020 520 1200 480 V800 H0Z" fill="url(#hill)"/>
-  <path d="M0 660 C300 580 520 700 820 650 C1000 620 1100 640 1200 670 V800 H0Z" fill="#4c9414" opacity=".7"/>
-</svg>
+<picture class="wallpaper" aria-hidden="true">
+  <source media="(max-width: 650px)" srcset="assets/bliss-small.webp">
+  <img src="assets/bliss.webp" alt="" width="1620" height="1080" fetchpriority="high">
+</picture>
 
 <main class="desk">
-  <div class="col">
+  <header class="desktop-header">
+    <img class="icon brand-icon" src="assets/icons/gift_24_color.svg" alt="" draggable="false">
+    <div class="desktop-brand">
+      <strong>생일 바탕화면</strong>
+      <span>김성주의 스물두 번째 생일</span>
+    </div>
+    <time datetime="2026-11-27">2026. 11. 27.</time>
+  </header>
+  <div class="col party-column">
+    <section class="window" id="party">
+      <div class="titlebar">
+        <img class="icon app-icon" src="assets/icons/gift_24_color.svg" alt="" draggable="false">
+        <h2 tabindex="-1" data-shortcut="생일파티">생일파티.exe</h2>
+        <button class="ctl minimize" aria-label="창 최소화"><img class="icon" src="assets/icons/subtract_16_regular.svg" alt="" draggable="false"></button>
+        <button class="ctl close" aria-label="창 닫기"><img class="icon" src="assets/icons/dismiss_16_regular.svg" alt="" draggable="false"></button>
+      </div>
+      <div class="body">
+        <p class="age">만 <strong>22</strong>세</p>
+        <h1><span>김성주</span><br>생일 축하해!</h1>
+        <p id="message" aria-live="polite">소원을 빌고 촛불을 하나씩 꺼보세요.</p>
+        <div class="cake-stage">
+          <div class="cake">
+            <div class="plate"></div>
+            <div class="layer bottom"></div>
+            <div class="layer top"></div>
+            <div class="candles" id="candles"></div>
+          </div>
+          <p id="candleCount" aria-hidden="true">0 / 5</p>
+        </div>
+        <div class="buttons">
+          <button class="btn" id="song"><img class="icon" src="assets/icons/music_note_2_20_regular.svg" alt="" draggable="false">노래</button>
+          <button class="btn" id="boom"><img class="icon" src="assets/icons/sparkle_20_regular.svg" alt="" draggable="false">폭죽</button>
+          <button class="btn" id="relight"><img class="icon" src="assets/icons/arrow_reset_20_regular.svg" alt="" draggable="false">다시 불 켜기</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="col status-column">
     <section class="window" id="timerWin">
-      <div class="titlebar"><b>생일 타이머</b><span class="ctl" aria-hidden="true">_</span><span class="ctl" aria-hidden="true">□</span><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="titlebar">
+        <img class="icon app-icon" src="assets/icons/timer_24_regular.svg" alt="" draggable="false">
+        <h2 tabindex="-1" data-shortcut="타이머">생일 타이머</h2>
+        <button class="ctl minimize" aria-label="창 최소화"><img class="icon" src="assets/icons/subtract_16_regular.svg" alt="" draggable="false"></button>
+        <button class="ctl close" aria-label="창 닫기"><img class="icon" src="assets/icons/dismiss_16_regular.svg" alt="" draggable="false"></button>
+      </div>
       <div class="body" role="timer">
         <p id="timerLabel">생일 시작까지</p>
-        <strong id="countdown" class="led sunken">--:--:--</strong>
+        <strong id="countdown" class="led">--:--:--</strong>
+        <p class="timer-zone">한국 시간 기준</p>
       </div>
-      <canvas class="sticker" data-emoji="💾" style="left:-18px; bottom:-34px"></canvas>
     </section>
 
     <section class="window" id="errorWin">
-      <div class="titlebar"><b>Error</b><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="titlebar">
+        <img class="icon app-icon" src="assets/icons/warning_24_color.svg" alt="" draggable="false">
+        <h2 tabindex="-1" data-shortcut="나이 확인">Error</h2>
+        <button class="ctl minimize" aria-label="창 최소화"><img class="icon" src="assets/icons/subtract_16_regular.svg" alt="" draggable="false"></button>
+        <button class="ctl close" aria-label="창 닫기"><img class="icon" src="assets/icons/dismiss_16_regular.svg" alt="" draggable="false"></button>
+      </div>
       <div class="body">
-        <div class="alert"><canvas data-emoji="⚠️"></canvas><p id="errorText" aria-live="polite">나이 확인 오류:<br>만 22세 외의 숫자는<br>찾을 수 없습니다.</p></div>
+        <div class="alert"><img class="icon" src="assets/icons/warning_24_color.svg" alt="" draggable="false"><p id="errorText" aria-live="polite">나이 확인 오류:<br>만 22세 외의 숫자는<br>찾을 수 없습니다.</p></div>
         <div class="buttons"><button class="btn" id="agree">인정</button></div>
       </div>
-      <canvas class="sticker" data-emoji="🐠" style="right:-16px; bottom:-38px; --s:76px"></canvas>
     </section>
 
     <section class="window" id="pollWin">
-      <div class="titlebar"><b>설문조사.exe</b><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="titlebar">
+        <img class="icon app-icon" src="assets/icons/poll_24_color.svg" alt="" draggable="false">
+        <h2 tabindex="-1" data-shortcut="설문">설문조사.exe</h2>
+        <button class="ctl minimize" aria-label="창 최소화"><img class="icon" src="assets/icons/subtract_16_regular.svg" alt="" draggable="false"></button>
+        <button class="ctl close" aria-label="창 닫기"><img class="icon" src="assets/icons/dismiss_16_regular.svg" alt="" draggable="false"></button>
+      </div>
       <div class="body">
         <p>Q. 만 22세 김성주는?</p>
         <div class="buttons">
@@ -216,79 +174,66 @@
     </section>
   </div>
 
-  <div class="col">
-    <section class="window" id="party">
-      <div class="titlebar"><b>생일파티.exe</b><span class="ctl" aria-hidden="true">_</span><span class="ctl" aria-hidden="true">□</span><button class="ctl close" aria-label="창 닫기">×</button></div>
-      <div class="body">
-        <p class="age">만 22세</p>
-        <h1>김성주<br>생일 축하해!</h1>
-        <p id="message" aria-live="polite">소원을 빌고 촛불을 눌러서 꺼보세요 ✨</p>
-        <div class="cake">
-          <div class="plate"></div>
-          <div class="layer bottom"></div>
-          <div class="layer top"></div>
-          <div class="candles" id="candles"></div>
-        </div>
-        <div class="buttons">
-          <button class="btn" id="song">♪ 노래</button>
-          <button class="btn" id="boom">폭죽</button>
-          <button class="btn" id="relight">다시 불 켜기</button>
-        </div>
-      </div>
-      <canvas class="sticker" data-emoji="💎" style="right:-18px; top:62px; --s:56px"></canvas>
-      <canvas class="sticker" data-emoji="🌍" style="left:-20px; top:48px; --s:56px"></canvas>
-      <canvas class="sticker" data-emoji="💿" style="right:-18px; bottom:-34px"></canvas>
-    </section>
-  </div>
-
-  <div class="col">
+  <div class="col games-column">
     <section class="window" id="mineWin">
-      <div class="titlebar"><b>지뢰찾기</b><span class="ctl" aria-hidden="true">_</span><span class="ctl" aria-hidden="true">□</span><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="titlebar">
+        <img class="icon app-icon" src="assets/icons/games_24_regular.svg" alt="" draggable="false">
+        <h2 tabindex="-1" data-shortcut="지뢰찾기">지뢰찾기</h2>
+        <button class="ctl minimize" aria-label="창 최소화"><img class="icon" src="assets/icons/subtract_16_regular.svg" alt="" draggable="false"></button>
+        <button class="ctl close" aria-label="창 닫기"><img class="icon" src="assets/icons/dismiss_16_regular.svg" alt="" draggable="false"></button>
+      </div>
       <div class="body">
         <div class="mine-top"><span class="led" id="mineCount">008</span><button class="btn" id="face" aria-label="새 게임">🙂</button><span class="led" id="mineTime">000</span></div>
         <div class="board" id="board"></div>
         <p id="mineText" aria-live="polite">지뢰를 피해서 선물을 지켜라!</p>
-        <div class="buttons"><button class="btn" id="flagMode" aria-pressed="false">🚩 깃발 모드</button></div>
+        <div class="buttons"><button class="btn" id="flagMode" aria-pressed="false"><img class="icon" src="assets/icons/flag_24_color.svg" alt="" draggable="false">깃발 모드</button></div>
       </div>
-      <canvas class="sticker" data-emoji="🖥️" style="left:-22px; bottom:-34px; --s:72px"></canvas>
     </section>
 
     <section class="window" id="loadWin">
-      <div class="titlebar"><b>다운로드</b><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="titlebar">
+        <img class="icon app-icon" src="assets/icons/arrow_download_24_regular.svg" alt="" draggable="false">
+        <h2 tabindex="-1" data-shortcut="다운로드">다운로드</h2>
+        <button class="ctl minimize" aria-label="창 최소화"><img class="icon" src="assets/icons/subtract_16_regular.svg" alt="" draggable="false"></button>
+        <button class="ctl close" aria-label="창 닫기"><img class="icon" src="assets/icons/dismiss_16_regular.svg" alt="" draggable="false"></button>
+      </div>
       <div class="body">
         <p id="loadText">행복 다운로드 중... 0%</p>
-        <div class="progress sunken" id="progress"></div>
+        <div class="progress sunken" id="progress" role="progressbar" aria-label="행복 다운로드" aria-valuenow="0"></div>
         <button class="btn" id="reload">다시 받기</button>
       </div>
-      <canvas class="sticker" data-emoji="🌳" style="right:-20px; bottom:-30px; --s:76px"></canvas>
-      <canvas class="sticker" data-emoji="📼" style="left:-20px; bottom:-28px; --s:56px"></canvas>
     </section>
   </div>
 </main>
 
 <div class="lawn" aria-hidden="true">
-  <canvas class="sticker" data-emoji="🗑️" style="left:5%; bottom:70px; --s:84px"></canvas>
-  <canvas class="sticker" data-emoji="📁" style="left:17%; bottom:150px"></canvas>
-  <canvas class="sticker" data-emoji="🎁" style="left:30%; bottom:64px; --s:92px"></canvas>
-  <canvas class="sticker" data-emoji="🃏" style="right:30%; bottom:120px; --s:72px"></canvas>
-  <canvas class="sticker" data-emoji="🏠" style="right:15%; bottom:68px; --s:88px"></canvas>
-  <canvas class="sticker" data-emoji="🎈" style="right:4%; bottom:150px; --s:84px"></canvas>
+  <img class="icon sticker sticker-globe" src="assets/icons/globe_24_color.svg" alt="" draggable="false">
+  <img class="icon sticker sticker-folder" src="assets/icons/document_folder_24_color.svg" alt="" draggable="false">
+  <img class="icon sticker sticker-heart" src="assets/icons/heart_24_color.svg" alt="" draggable="false">
 </div>
 
 <footer class="taskbar">
-  <button id="start"><canvas data-emoji="🎂"></canvas>시작</button>
-  <span id="clock"></span>
+  <div class="task-inner">
+    <button id="start" aria-expanded="false" aria-controls="startPanel"><img class="icon" src="assets/icons/apps_24_color.svg" alt="" draggable="false">시작</button>
+    <nav class="task-apps" id="taskApps" aria-label="열린 창"></nav>
+    <time id="clock" title="한국 시간 (KST)"></time>
+  </div>
+  <div id="startPanel" class="start-panel" hidden>
+    <div class="start-heading"><img class="icon" src="assets/icons/gift_24_color.svg" alt="" draggable="false"><strong>생일 바탕화면</strong></div>
+    <nav id="startApps" aria-label="모든 앱"></nav>
+    <button id="restoreAll" class="btn">모든 창 다시 열기</button>
+  </div>
 </footer>
 <canvas id="confetti"></canvas>
 
-<div id="scare" role="dialog" aria-modal="true" aria-label="칼을 든 케이크 귀신이 쫓아오는 영상" hidden>
-  <canvas id="chase"></canvas>
-  <button class="ctl" id="scareClose" aria-label="영상 닫기">×</button>
+<dialog id="scare" aria-label="토끼 추격 영상">
+  <canvas id="chase" aria-label="어두운 복도에서 카메라로 달려오는 토끼" role="img"></canvas>
+  <button class="ctl" id="scareClose" aria-label="영상 닫기"><img class="icon" src="assets/icons/dismiss_16_regular.svg" alt=""></button>
   <div id="scareEnd" hidden>
     <p>늙었다고...?</p>
     <div class="buttons"><button class="btn" id="replay">다시 보기</button><button class="btn" id="sorry">잘못했어요</button></div>
   </div>
-</div>
+</dialog>
 
 <script>
   const $ = id => document.getElementById(id);
@@ -304,8 +249,12 @@
   const timerLabel = $('timerLabel');
   let wasBefore = false;
 
+  const clockFormat = new Intl.DateTimeFormat('ko-KR', {
+    hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Seoul',
+  });
+
   function tick(now = Date.now()) {
-    $('clock').textContent = new Date(now).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: '2-digit' });
+    $('clock').textContent = clockFormat.format(now);
     const before = now < START;
     // 페이지를 켜둔 채로 생일이 시작되면 폭죽
     if (wasBefore && !before && now < END) burst();
@@ -323,52 +272,129 @@
     const s = left % 60;
     countdown.textContent = [h, m, s].map(n => String(n).padStart(2, '0')).join(':');
   }
-  tick();
-  setInterval(tick, 250);
-
-  // 이모지 스티커 그리기
-  function sticker(canvas) {
-    const n = 128;
-    canvas.width = canvas.height = n;
-    const g = canvas.getContext('2d');
-    g.font = '104px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
-    g.textAlign = 'center';
-    g.textBaseline = 'middle';
-    g.fillText(canvas.dataset.emoji, n / 2, n / 2 + 4);
-  }
-  document.querySelectorAll('canvas[data-emoji]').forEach(sticker);
 
   // 창과 스티커 끌어서 옮기기
-  let top_ = 10;
-  function draggable(handle, target) {
-    let x = 0, y = 0, from;
-    handle.addEventListener('pointerdown', e => {
-      if (e.button || e.target.closest('button')) return;
-      from = { x: e.clientX - x, y: e.clientY - y };
-      target.style.zIndex = ++top_;
-      handle.setPointerCapture(e.pointerId);
+  const desktopLayout = matchMedia('(min-width: 1000px)');
+  const start = $('start');
+  const startPanel = $('startPanel');
+  const windows = [...document.querySelectorAll('.window')];
+  let frontWindow = null;
+
+  function bringForward(win) {
+    frontWindow?.classList.remove('foreground');
+    frontWindow = win;
+    win?.classList.add('foreground');
+  }
+
+  function draggable(handle, target, isWindow = false) {
+    let x = 0, y = 0, drag;
+    handle.addEventListener('pointerdown', event => {
+      if (event.button || drag || event.target.closest('button')) return;
+      if (isWindow && !desktopLayout.matches) return;
+
+      const rect = handle.getBoundingClientRect();
+      drag = {
+        id: event.pointerId, offsetX: event.clientX - x, offsetY: event.clientY - y,
+        left: x - rect.left, top: y - rect.top, width: rect.width, height: rect.height,
+      };
+      handle.setPointerCapture(event.pointerId);
     });
-    handle.addEventListener('pointermove', e => {
-      if (!from) return;
-      x = e.clientX - from.x;
-      y = e.clientY - from.y;
+    handle.addEventListener('pointermove', event => {
+      if (drag?.id !== event.pointerId) return;
+      const { left, top, width, height, offsetX, offsetY } = drag;
+      const barTop = $('clock').getBoundingClientRect().top;
+      x = Math.min(left + innerWidth - width, Math.max(left, event.clientX - offsetX));
+      y = Math.min(top + barTop - height - 5, Math.max(top, event.clientY - offsetY));
       target.style.translate = `${x}px ${y}px`;
     });
-    const stop = () => { from = null; };
-    handle.addEventListener('pointerup', stop);
-    handle.addEventListener('pointercancel', stop);
+    handle.addEventListener('lostpointercapture', () => { drag = null; });
+    if (isWindow) {
+      desktopLayout.addEventListener('change', () => {
+        x = y = 0;
+        drag = null;
+        target.style.translate = '';
+      });
+    }
   }
-  document.querySelectorAll('.window').forEach(w => {
-    draggable(w.querySelector('.titlebar'), w);
-    w.querySelector('.close').addEventListener('click', () => { w.hidden = true; });
-  });
-  document.querySelectorAll('.sticker').forEach(s => draggable(s, s));
 
-  // 시작 버튼: 닫은 창 다시 열기
-  $('start').addEventListener('click', e => {
-    document.querySelectorAll('.window').forEach(w => { w.hidden = false; });
-    const r = e.currentTarget.getBoundingClientRect();
-    burst(r.right, r.top, 80);
+  function openStart(open, returnFocus = false) {
+    startPanel.hidden = !open;
+    start.setAttribute('aria-expanded', open);
+    if (open) $('startApps').firstElementChild.focus();
+    if (returnFocus) start.focus();
+  }
+
+  const shortcuts = new Map();
+  for (const win of windows) {
+    const titlebar = win.querySelector('.titlebar');
+    const title = titlebar.querySelector('h2');
+    win.setAttribute('aria-labelledby', `${win.id}Title`);
+    title.id = `${win.id}Title`;
+
+    const menuButton = document.createElement('button');
+    menuButton.type = 'button';
+    menuButton.className = 'app-shortcut';
+    menuButton.setAttribute('aria-controls', win.id);
+    menuButton.append(titlebar.querySelector('.app-icon').cloneNode(), title.dataset.shortcut);
+    $('startApps').append(menuButton);
+
+    const taskButton = menuButton.cloneNode(true);
+    taskButton.classList.add('task-app');
+    taskButton.setAttribute('aria-label', title.dataset.shortcut);
+    taskButton.setAttribute('aria-pressed', 'true');
+    const label = document.createElement('span');
+    label.textContent = taskButton.lastChild.textContent;
+    taskButton.lastChild.replaceWith(label);
+    taskButton.title = title.dataset.shortcut;
+    $('taskApps').append(taskButton);
+    shortcuts.set(win, taskButton);
+
+    function showWindow() {
+      win.hidden = false;
+      taskButton.setAttribute('aria-pressed', 'true');
+      bringForward(win);
+      title.focus({ preventScroll: true });
+      win.scrollIntoView({ block: 'nearest' });
+    }
+
+    function hideWindow() {
+      win.hidden = true;
+      taskButton.setAttribute('aria-pressed', 'false');
+      if (frontWindow === win) bringForward(null);
+      taskButton.focus();
+    }
+
+    menuButton.addEventListener('click', () => {
+      openStart(false);
+      showWindow();
+    });
+    taskButton.addEventListener('click', () => {
+      if (!win.hidden && frontWindow === win) hideWindow();
+      else showWindow();
+    });
+    win.querySelectorAll('.minimize, .close').forEach(button => button.addEventListener('click', hideWindow));
+    win.addEventListener('pointerdown', () => bringForward(win));
+    win.addEventListener('focusin', () => bringForward(win));
+    draggable(titlebar, win, true);
+  }
+  bringForward($('party'));
+  document.querySelectorAll('.sticker').forEach(sticker => draggable(sticker, sticker));
+
+  start.addEventListener('click', () => openStart(startPanel.hidden));
+  document.addEventListener('pointerdown', event => {
+    if (!start.contains(event.target) && !startPanel.contains(event.target)) openStart(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !startPanel.hidden) openStart(false, true);
+  });
+  $('restoreAll').addEventListener('click', () => {
+    for (const [win, shortcut] of shortcuts) {
+      win.hidden = false;
+      shortcut.setAttribute('aria-pressed', 'true');
+    }
+    openStart(false, true);
+    const rect = start.getBoundingClientRect();
+    burst(rect.right, rect.top, 80);
   });
 
   // 색종이
@@ -423,7 +449,9 @@
     candle.addEventListener('click', () => {
       if (candle.classList.contains('out')) return;
       candle.classList.add('out');
+      candle.setAttribute('aria-disabled', 'true');
       const left = box.querySelectorAll('.candle:not(.out)').length;
+      $('candleCount').textContent = `${colors.length - left} / ${colors.length}`;
       if (left) {
         message.textContent = `후~ 촛불이 ${left}개 남았어요`;
       } else {
@@ -437,7 +465,11 @@
   });
 
   $('relight').addEventListener('click', () => {
-    box.querySelectorAll('.candle').forEach(c => c.classList.remove('out'));
+    box.querySelectorAll('.candle').forEach(candle => {
+      candle.classList.remove('out');
+      candle.removeAttribute('aria-disabled');
+    });
+    $('candleCount').textContent = `0 / ${colors.length}`;
     message.textContent = startText;
   });
   $('boom').addEventListener('click', () => burst());
@@ -484,14 +516,17 @@
     burst(innerWidth / 2, innerHeight / 2, 60);
   });
 
-  // 설문: '늙었다' → 칼 든 케이크 귀신이 쫓아오는 영상
+  // 설문에서 '늙었다'를 선택하면 토끼 추격 영상 재생
   const scare = $('scare');
   const scareEnd = $('scareEnd');
   const pollResult = $('pollResult');
   const film = $('chase');
   const fx = film.getContext('2d');
   const LUNGE = 4.8, CUT = 5.8;
-  let raf, startedAt, sound;
+  const rabbit = new Image();
+  rabbit.src = 'assets/chase-rabbit.webp';
+  const rabbitReady = rabbit.decode().then(() => true, () => false);
+  let raf, sound, chaseRun = 0;
 
   const lerp = (a, b, k) => a + (b - a) * k;
   const clamp = k => Math.min(1, Math.max(0, k));
@@ -503,84 +538,6 @@
     fx.fill();
   }
 
-  function limb(points, width, color) {
-    fx.beginPath();
-    points.forEach(([x, y], i) => i ? fx.lineTo(x, y) : fx.moveTo(x, y));
-    fx.lineWidth = width;
-    fx.lineCap = fx.lineJoin = 'round';
-    fx.strokeStyle = color;
-    fx.stroke();
-  }
-
-  function shape(points, fill) {
-    fx.beginPath();
-    points.forEach(([x, y], i) => i ? fx.lineTo(x, y) : fx.moveTo(x, y));
-    fx.closePath();
-    fx.fillStyle = fill;
-    fx.fill();
-  }
-
-  // 케이크 귀신: 몸 중심이 (0, 0), 폭이 약 230
-  function cakeGhost(step) {
-    const swing = Math.sin(step);
-    // 가느다란 다리와 팔
-    for (const side of [-1, 1]) {
-      const lift = Math.max(0, side * swing) * 46;
-      limb([[side * 52, 80], [side * 82, 140 - lift], [side * 58, 200 - lift]], 15, '#4a2419');
-      oval(side * 70, 204 - lift, 30, 13, '#1b0c08');
-    }
-    limb([[104, 5], [158, 45 + swing * 30], [150, 105 + swing * 40]], 14, '#4a2419');
-    // 초
-    [-66, -22, 24, 70].forEach((x, i) => {
-      const top = -150 - (i % 2) * 22;
-      limb([[x, -84], [x + (i - 1.5) * 8, top]], 14, i % 2 ? '#6fd3c0' : '#d7d2e8');
-      const fxPos = x + (i - 1.5) * 8 + Math.sin(step * 2 + i) * 5;
-      oval(fxPos, top - 24, 13, 25, '#ff6a1f');
-      oval(fxPos, top - 17, 6, 13, '#ffe66b');
-    });
-    // 빵
-    const sponge = fx.createLinearGradient(-115, 0, 115, 0);
-    sponge.addColorStop(0, '#59301c');
-    sponge.addColorStop(.4, '#b9784a');
-    sponge.addColorStop(1, '#46230f');
-    shape([[-104, -72], [104, -72], [118, 94], [-118, 94]], sponge);
-    limb([[-108, 40], [108, 40]], 13, '#7c1424');
-    // 윗면과 흘러내리는 딸기 시럽
-    oval(0, -74, 106, 25, '#c81f38');
-    const drips = [34, 66, 24, 48, 20, 74, 30, 52];
-    drips.forEach((len, i) => {
-      const x = -91 + i * 26;
-      limb([[x, -70], [x, -70 + len]], 22, '#a3122a');
-    });
-    // 짝짝이 눈
-    for (const [x, y, r] of [[-46, -8, 30], [48, -16, 21]]) {
-      oval(x, y, r, r, '#f4efd6');
-      oval(x + swing * 4, y + 3, r * .22, r * .22, '#140000');
-      limb([[x - r, y - r - 12 * Math.sign(-x)], [x + r, y - r + 12 * Math.sign(-x)]], 9, '#1b0c08');
-    }
-    // 톱니 입
-    shape([[-84, 30], [-40, 46], [0, 36], [42, 48], [86, 24], [58, 80], [0, 94], [-55, 80]], '#170003');
-    for (let i = 0; i < 7; i++) {
-      const x = -66 + i * 20;
-      shape([[x, 38], [x + 16, 42], [x + 8, 62]], '#efe6c4');
-      shape([[x + 4, 84], [x + 20, 82], [x + 12, 64]], '#efe6c4');
-    }
-    // 케이크 칼을 든 팔
-    const hx = -168, hy = 30 - Math.abs(swing) * 50;
-    limb([[-106, 12], [-160, 66], [hx, hy]], 14, '#4a2419');
-    fx.save();
-    fx.translate(hx, hy);
-    fx.rotate(-.35 + swing * .35);
-    const steel = fx.createLinearGradient(-18, 0, 18, 0);
-    steel.addColorStop(0, '#fff');
-    steel.addColorStop(.5, '#aab8cc');
-    steel.addColorStop(1, '#465166');
-    shape([[-15, -14], [-19, -145], [0, -172], [17, -140], [15, -14]], steel);
-    limb([[0, -12], [0, 30]], 22, '#17100c');
-    oval(0, 6, 17, 15, '#4a2419');
-    fx.restore();
-  }
-
   function render(t) {
     const w = film.width, h = film.height, u = Math.min(w, h);
     fx.fillStyle = '#000';
@@ -589,12 +546,18 @@
 
     const run = clamp((t - .9) / (LUNGE - .9));
     const lunge = clamp((t - LUNGE) / .25);
-    const shake = u * (.004 + run * .012 + lunge * .035);
+    const shake = reduced ? 0 : u * (.004 + run * .009 + lunge * .023);
     fx.save();
     fx.translate((Math.random() - .5) * shake, Math.sin(t * 13) * shake);
 
     // 어두운 복도: 문틀이 멀어짐 (뒷걸음질하는 카메라)
-    const cx = w / 2, cy = h * .46;
+    const cx = w / 2, cy = h * .51;
+    const corridor = fx.createRadialGradient(cx, cy, 0, cx, cy, u * .77);
+    corridor.addColorStop(0, '#392921');
+    corridor.addColorStop(.45, '#231610');
+    corridor.addColorStop(1, '#100c0c');
+    fx.fillStyle = corridor;
+    fx.fillRect(0, 0, w, h);
     for (let i = 0; i < 7; i++) {
       const depth = (i + (t * 1.4) % 1) / 7;
       const size = Math.pow(1 - depth, 2);
@@ -612,28 +575,31 @@
       fx.stroke();
     }
 
-    // 케이크 귀신
-    const step = t * (9 + run * 8);
-    const near = u / 620;
-    const scale = near * (lerp(.14, 1.25, run * run) + lunge * 2.1);
-    const x = cx + Math.sin(step * .5) * u * .09 * (1 - lunge);
-    const y = cy + lerp(0, h * .08, run) - Math.abs(Math.sin(step)) * u * .07 * run * (1 - lunge) + lunge * u * .03;
+    const step = t * (10 + run * 4);
+    const stride = Math.sin(step);
+    const rabbitHeight = u * (lerp(.20, .98, run ** 1.8) + lunge * 1.28);
+    const rabbitWidth = rabbitHeight * rabbit.naturalWidth / rabbit.naturalHeight;
+    const x = cx + stride * u * .055 * (1 - lunge);
+    const ground = cy + u * lerp(.14, .46, run);
+    const y = ground - Math.abs(stride) * u * lerp(.012, .048, run) + lunge * u * .56;
+    oval(x, ground, rabbitWidth * .36, rabbitWidth * .09, 'rgba(0, 0, 0, .65)');
+
     fx.save();
     fx.translate(x, y);
-    fx.rotate(Math.sin(step * .5) * .13 * (1 - lunge));
-    fx.scale(scale, scale);
-    cakeGhost(step);
+    fx.rotate(stride * .105 * (1 - lunge));
+    fx.scale(Math.cos(step) < 0 ? -1 : 1, 1);
+    fx.drawImage(rabbit, -rabbitWidth / 2, -rabbitHeight, rabbitWidth, rabbitHeight);
     fx.restore();
     fx.restore();
 
     // 손전등, 노이즈, 주사선
     const light = fx.createRadialGradient(cx, cy, u * .12, cx, cy, u * .78);
     light.addColorStop(0, 'rgba(0, 0, 0, .05)');
-    light.addColorStop(.6, 'rgba(0, 0, 0, .55)');
+    light.addColorStop(.6, 'rgba(0, 0, 0, .40)');
     light.addColorStop(1, 'rgba(0, 0, 0, .96)');
     fx.fillStyle = light;
     fx.fillRect(0, 0, w, h);
-    for (let i = 0; i < 900; i++) {
+    for (let i = 0; i < 350; i++) {
       fx.fillStyle = `rgba(255, 255, 255, ${Math.random() * .14})`;
       fx.fillRect(Math.random() * w, Math.random() * h, 2, 2);
     }
@@ -644,7 +610,7 @@
     fx.fillStyle = '#fff';
     fx.fillText(`11.27  00:00:0${Math.floor(t)}`, u * .05, h - u * .05);
     fx.fillText('REC', u * .1, u * .085);
-    if (t % 1 < .6) oval(u * .065, u * .07, u * .016, u * .016, '#ff2b1c');
+    if (reduced || t % 1 < .6) oval(u * .065, u * .07, u * .016, u * .016, '#ff2b1c');
   }
 
   // 발소리와 마지막 효과음
@@ -680,10 +646,20 @@
     $('sorry').focus();
   }
 
-  function play() {
+  async function play() {
     stopChase();
+    const run = chaseRun;
     scareEnd.hidden = true;
-    const k = Math.min(1, 900 / Math.max(innerWidth, innerHeight));
+    $('scareClose').focus();
+    const ready = await rabbitReady;
+    if (run !== chaseRun) return;
+    if (!ready) {
+      showEnd();
+      scareEnd.querySelector('p').textContent = '영상을 불러올 수 없어요.';
+      return;
+    }
+    scareEnd.querySelector('p').textContent = '늙었다고...?';
+    const k = Math.min(1, 1100 / Math.max(innerWidth, innerHeight));
     film.width = Math.round(innerWidth * k);
     film.height = Math.round(innerHeight * k);
     // 동작 줄이기 설정이면 정지 화면만 보여줌
@@ -693,9 +669,8 @@
       $('sorry').focus();
       return;
     }
-    $('scareClose').focus();
     chaseSound();
-    startedAt = performance.now();
+    const startedAt = performance.now();
     const frame = now => {
       const t = Math.max(0, (now - startedAt) / 1000);
       if (t >= CUT) return showEnd();
@@ -706,6 +681,7 @@
   }
 
   function stopChase() {
+    chaseRun++;
     cancelAnimationFrame(raf);
     sound?.disconnect();
     sound = null;
@@ -714,19 +690,22 @@
   $('old').addEventListener('click', () => {
     pollResult.textContent = '';
     pieces = [];
-    scare.hidden = false;
+    scare.showModal();
     play();
   });
   function closeScare() {
-    if (scare.hidden) return;
+    if (!scare.open) return;
     stopChase();
-    scare.hidden = true;
-    $('young').focus();
+    scare.close();
+    $('old').focus();
   }
   $('sorry').addEventListener('click', closeScare);
   $('scareClose').addEventListener('click', closeScare);
   $('replay').addEventListener('click', play);
-  addEventListener('keydown', e => { if (e.key === 'Escape') closeScare(); });
+  scare.addEventListener('cancel', event => {
+    event.preventDefault();
+    closeScare();
+  });
   $('young').addEventListener('click', e => {
     pollResult.textContent = '사랑해 💖';
     const r = e.currentTarget.getBoundingClientRect();
@@ -832,16 +811,23 @@
   function download() {
     clearInterval(loader);
     percent = 0;
+    renderDownload();
     loader = setInterval(() => {
-      percent = Math.min(100, percent + 5);
-      [...bar.children].forEach((el, i) => el.classList.toggle('on', i < percent / 5));
-      $('loadText').textContent = percent < 100 ? `행복 다운로드 중... ${percent}%` : '다운로드 완료! 행복 100% 💖';
+      percent += 5;
+      renderDownload();
       if (percent === 100) clearInterval(loader);
     }, 350);
   }
+
+  function renderDownload() {
+    bar.setAttribute('aria-valuenow', percent);
+    [...bar.children].forEach((el, i) => el.classList.toggle('on', i < percent / 5));
+    $('loadText').textContent = percent < 100 ? `행복 다운로드 중... ${percent}%` : '다운로드 완료! 행복 100% 💖';
+  }
   $('reload').addEventListener('click', download);
   download();
-
+  tick();
+  setInterval(tick, 250);
   burst();
 </script>
 </body>
