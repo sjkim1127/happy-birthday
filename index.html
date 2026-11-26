@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>생일 축하해! 🎂</title>
-<meta name="description" content="촛불을 끄고 소원을 빌어보세요">
+<title>김성주, 생일 축하해! 🎂</title>
+<meta name="description" content="김성주 만 22세 생일 파티 — 촛불을 끄고 소원을 빌어보세요">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <style>
@@ -15,7 +15,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow-x: hidden;
     font-family: 'Jua', system-ui, sans-serif;
     color: #fff;
     background: radial-gradient(circle at 50% 20%, #4b2a7b, #1b1038 60%, #0d0820);
@@ -32,7 +32,18 @@
   @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
   #message { margin-top: 12px; font-size: clamp(1rem, 4vw, 1.35rem); color: #ffd9ec; min-height: 1.6em; word-break: keep-all; }
 
-  .cake { position: relative; width: 270px; height: 230px; margin: 28px auto 0; }
+  .age {
+    display: inline-block; margin-bottom: 12px; padding: 6px 18px; border-radius: 999px;
+    font-size: 1.2rem; color: #2a1650; background: #ffe27a;
+  }
+  .timer {
+    display: inline-block; margin-top: 16px; padding: 10px 24px; border-radius: 18px;
+    background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .2);
+  }
+  #timerLabel { font-size: 1rem; color: #cbb8ff; }
+  #countdown { display: block; font-size: clamp(2rem, 9vw, 3rem); font-variant-numeric: tabular-nums; letter-spacing: 2px; }
+
+  .cake { position: relative; width: 270px; height: 230px; margin: 20px auto 0; }
   .layer { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 16px 16px 8px 8px; }
   .layer::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 26px;
@@ -83,14 +94,19 @@
   .balloon::after { content: ''; position: absolute; top: 100%; left: 50%; width: 1px; height: 55px; background: rgba(255,255,255,.45); }
   @keyframes rise { to { transform: translate(var(--x), calc(-100vh - 280px)); } }
 
-  @media (max-height: 640px) { body { overflow: auto; } }
   @media (prefers-reduced-motion: reduce) { h1 span, .flame { animation: none; } .balloon { display: none; } }
 </style>
 </head>
 <body>
 <main>
-  <h1><span>🎉</span> 생일 축하해! <span style="animation-delay:.3s">🎉</span></h1>
+  <p class="age">만 22세</p>
+  <h1>김성주,<br><span>🎉</span> 생일 축하해! <span style="animation-delay:.3s">🎉</span></h1>
   <p id="message" aria-live="polite">소원을 빌고 촛불을 눌러서 꺼보세요 ✨</p>
+
+  <div class="timer" role="timer">
+    <span id="timerLabel">생일이 끝나기까지</span>
+    <strong id="countdown">--:--:--</strong>
+  </div>
 
   <div class="cake">
     <div class="plate"></div>
@@ -112,6 +128,27 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const message = document.getElementById('message');
   const startText = message.textContent;
+
+  // 타이머: 한국 시간 11월 27일 0시까지
+  const END = new Date('2026-11-27T00:00:00+09:00').getTime();
+  const countdown = document.getElementById('countdown');
+  const timerLabel = document.getElementById('timerLabel');
+
+  function tick(now = Date.now()) {
+    const left = Math.max(0, Math.ceil((END - now) / 1000));
+    if (!left) {
+      timerLabel.textContent = '2026년 생일은 여기까지!';
+      countdown.textContent = '내년에 또 만나 👋';
+      return;
+    }
+    timerLabel.textContent = '생일이 끝나기까지';
+    const h = Math.floor(left / 3600);
+    const m = Math.floor(left / 60) % 60;
+    const s = left % 60;
+    countdown.textContent = [h, m, s].map(n => String(n).padStart(2, '0')).join(':');
+  }
+  tick();
+  setInterval(tick, 250);
 
   // 색종이
   const canvas = document.getElementById('confetti');
