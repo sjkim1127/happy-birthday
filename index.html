@@ -129,14 +129,12 @@
 
   /* 설문 */
   #pollResult:not(:empty) { margin-top: 14px; font: 30px Galmuri14, monospace; color: #e0197d; }
-  #scare {
-    position: fixed; inset: 0; z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
-    padding: 16px; background: #000; cursor: pointer;
-  }
-  #scare svg { width: min(94vw, 62vh); animation: lunge .45s ease-out both, shake .12s linear .45s 8; }
-  #scare p { font: 34px Galmuri14, monospace; color: #ff2b1c; }
-  @keyframes lunge { from { transform: scale(.15); } 70% { transform: scale(1.15); } to { transform: scale(1); } }
-  @keyframes shake { 25% { translate: -9px 3px; } 75% { translate: 9px -3px; } }
+  #scare { position: fixed; inset: 0; z-index: 3000; background: #000; }
+  #chase { width: 100%; height: 100%; display: block; }
+  #scareClose { position: absolute; top: 12px; right: 12px; width: 36px; height: 32px; font-size: 20px; }
+  #scareEnd { position: absolute; inset: auto 0 12%; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  #scareEnd p { font: 34px Galmuri14, monospace; color: #ff2b1c; }
+  #scareEnd .buttons { margin-top: 0; }
 
   /* 넓은 화면에서만 보이는 바닥 스티커 */
   .lawn { display: none; }
@@ -163,7 +161,7 @@
   @media (max-width: 999px) {
     #party { order: 1; } #timerWin { order: 2; } #pollWin { order: 3; } #errorWin { order: 4; } #mineWin { order: 5; } #loadWin { order: 6; }
   }
-  @media (prefers-reduced-motion: reduce) { .sticker, .flame, #scare svg { animation: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .sticker, .flame { animation: none; } }
 </style>
 </head>
 <body>
@@ -281,26 +279,13 @@
 </footer>
 <canvas id="confetti"></canvas>
 
-<div id="scare" role="dialog" aria-modal="true" aria-label="무서운 그림" hidden>
-  <svg viewBox="0 0 400 480" aria-hidden="true">
-    <defs>
-      <radialGradient id="skin" cx=".5" cy=".42" r=".6"><stop offset="0" stop-color="#e9eadf"/><stop offset=".7" stop-color="#8d9186"/><stop offset="1" stop-color="#1a1c18"/></radialGradient>
-      <radialGradient id="hole"><stop offset=".6" stop-color="#000"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
-    </defs>
-    <path d="M200 8C70 8 34 130 42 235C50 350 120 472 200 472S350 350 358 235C366 130 330 8 200 8Z" fill="url(#skin)"/>
-    <g fill="url(#hole)"><ellipse cx="128" cy="180" rx="66" ry="78"/><ellipse cx="274" cy="174" rx="72" ry="86"/></g>
-    <g fill="#ff1500"><circle cx="136" cy="188" r="8"/><circle cx="264" cy="184" r="8"/></g>
-    <g stroke="#000" stroke-linecap="round" fill="none">
-      <path d="M112 235Q100 300 116 360M140 244V290M288 240Q304 310 286 372M258 250V300" stroke-width="7"/>
-      <path d="M200 30L182 82L204 108L190 134M72 120L104 134" stroke-width="3"/>
-    </g>
-    <path d="M200 236L186 276H214Z" fill="#111"/>
-    <path d="M86 322Q200 362 314 316Q290 448 200 450Q112 446 86 322Z" fill="#120000"/>
-    <path d="M90 325L112 372L128 336L148 392L166 345L188 402L204 346L224 398L242 343L262 386L276 334L294 366L310 319Q200 360 90 325Z" fill="#d9d4b4"/>
-    <path d="M118 407L140 380L156 425L178 392L196 440L216 394L236 428L254 386L278 405Q244 449 200 450Q150 448 118 407Z" fill="#d9d4b4"/>
-  </svg>
-  <p>늙었다고...?</p>
-  <button class="btn" id="sorry">잘못했어요</button>
+<div id="scare" role="dialog" aria-modal="true" aria-label="칼을 든 케이크 귀신이 쫓아오는 영상" hidden>
+  <canvas id="chase"></canvas>
+  <button class="ctl" id="scareClose" aria-label="영상 닫기">×</button>
+  <div id="scareEnd" hidden>
+    <p>늙었다고...?</p>
+    <div class="buttons"><button class="btn" id="replay">다시 보기</button><button class="btn" id="sorry">잘못했어요</button></div>
+  </div>
 </div>
 
 <script>
@@ -513,21 +498,248 @@
     burst(innerWidth / 2, innerHeight / 2, 60);
   });
 
-  // 설문
+  // 설문: '늙었다' → 칼 든 케이크 귀신이 쫓아오는 영상
   const scare = $('scare');
+  const scareEnd = $('scareEnd');
   const pollResult = $('pollResult');
+  const film = $('chase');
+  const fx = film.getContext('2d');
+  const LUNGE = 4.8, CUT = 5.8;
+  let raf, startedAt, sound;
+
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const clamp = k => Math.min(1, Math.max(0, k));
+
+  function oval(x, y, rx, ry, fill, rot = 0) {
+    fx.beginPath();
+    fx.ellipse(x, y, rx, ry, rot, 0, Math.PI * 2);
+    fx.fillStyle = fill;
+    fx.fill();
+  }
+
+  function limb(points, width, color) {
+    fx.beginPath();
+    points.forEach(([x, y], i) => i ? fx.lineTo(x, y) : fx.moveTo(x, y));
+    fx.lineWidth = width;
+    fx.lineCap = fx.lineJoin = 'round';
+    fx.strokeStyle = color;
+    fx.stroke();
+  }
+
+  function shape(points, fill) {
+    fx.beginPath();
+    points.forEach(([x, y], i) => i ? fx.lineTo(x, y) : fx.moveTo(x, y));
+    fx.closePath();
+    fx.fillStyle = fill;
+    fx.fill();
+  }
+
+  // 케이크 귀신: 몸 중심이 (0, 0), 폭이 약 230
+  function cakeGhost(step) {
+    const swing = Math.sin(step);
+    // 가느다란 다리와 팔
+    for (const side of [-1, 1]) {
+      const lift = Math.max(0, side * swing) * 46;
+      limb([[side * 52, 80], [side * 82, 140 - lift], [side * 58, 200 - lift]], 15, '#4a2419');
+      oval(side * 70, 204 - lift, 30, 13, '#1b0c08');
+    }
+    limb([[104, 5], [158, 45 + swing * 30], [150, 105 + swing * 40]], 14, '#4a2419');
+    // 초
+    [-66, -22, 24, 70].forEach((x, i) => {
+      const top = -150 - (i % 2) * 22;
+      limb([[x, -84], [x + (i - 1.5) * 8, top]], 14, i % 2 ? '#6fd3c0' : '#d7d2e8');
+      const fxPos = x + (i - 1.5) * 8 + Math.sin(step * 2 + i) * 5;
+      oval(fxPos, top - 24, 13, 25, '#ff6a1f');
+      oval(fxPos, top - 17, 6, 13, '#ffe66b');
+    });
+    // 빵
+    const sponge = fx.createLinearGradient(-115, 0, 115, 0);
+    sponge.addColorStop(0, '#59301c');
+    sponge.addColorStop(.4, '#b9784a');
+    sponge.addColorStop(1, '#46230f');
+    shape([[-104, -72], [104, -72], [118, 94], [-118, 94]], sponge);
+    limb([[-108, 40], [108, 40]], 13, '#7c1424');
+    // 윗면과 흘러내리는 딸기 시럽
+    oval(0, -74, 106, 25, '#c81f38');
+    const drips = [34, 66, 24, 48, 20, 74, 30, 52];
+    drips.forEach((len, i) => {
+      const x = -91 + i * 26;
+      limb([[x, -70], [x, -70 + len]], 22, '#a3122a');
+    });
+    // 짝짝이 눈
+    for (const [x, y, r] of [[-46, -8, 30], [48, -16, 21]]) {
+      oval(x, y, r, r, '#f4efd6');
+      oval(x + swing * 4, y + 3, r * .22, r * .22, '#140000');
+      limb([[x - r, y - r - 12 * Math.sign(-x)], [x + r, y - r + 12 * Math.sign(-x)]], 9, '#1b0c08');
+    }
+    // 톱니 입
+    shape([[-84, 30], [-40, 46], [0, 36], [42, 48], [86, 24], [58, 80], [0, 94], [-55, 80]], '#170003');
+    for (let i = 0; i < 7; i++) {
+      const x = -66 + i * 20;
+      shape([[x, 38], [x + 16, 42], [x + 8, 62]], '#efe6c4');
+      shape([[x + 4, 84], [x + 20, 82], [x + 12, 64]], '#efe6c4');
+    }
+    // 케이크 칼을 든 팔
+    const hx = -168, hy = 30 - Math.abs(swing) * 50;
+    limb([[-106, 12], [-160, 66], [hx, hy]], 14, '#4a2419');
+    fx.save();
+    fx.translate(hx, hy);
+    fx.rotate(-.35 + swing * .35);
+    const steel = fx.createLinearGradient(-18, 0, 18, 0);
+    steel.addColorStop(0, '#fff');
+    steel.addColorStop(.5, '#aab8cc');
+    steel.addColorStop(1, '#465166');
+    shape([[-15, -14], [-19, -145], [0, -172], [17, -140], [15, -14]], steel);
+    limb([[0, -12], [0, 30]], 22, '#17100c');
+    oval(0, 6, 17, 15, '#4a2419');
+    fx.restore();
+  }
+
+  function render(t) {
+    const w = film.width, h = film.height, u = Math.min(w, h);
+    fx.fillStyle = '#000';
+    fx.fillRect(0, 0, w, h);
+    if (t >= CUT) return;
+
+    const run = clamp((t - .9) / (LUNGE - .9));
+    const lunge = clamp((t - LUNGE) / .25);
+    const shake = u * (.004 + run * .012 + lunge * .035);
+    fx.save();
+    fx.translate((Math.random() - .5) * shake, Math.sin(t * 13) * shake);
+
+    // 어두운 복도: 문틀이 멀어짐 (뒷걸음질하는 카메라)
+    const cx = w / 2, cy = h * .46;
+    for (let i = 0; i < 7; i++) {
+      const depth = (i + (t * 1.4) % 1) / 7;
+      const size = Math.pow(1 - depth, 2);
+      const rw = w * 1.3 * size + u * .08, rh = h * 1.3 * size + u * .1;
+      fx.strokeStyle = `rgba(120, 70, 70, ${.1 + size * .3})`;
+      fx.lineWidth = u * (.004 + size * .02);
+      fx.strokeRect(cx - rw / 2, cy - rh / 2, rw, rh);
+    }
+    fx.strokeStyle = 'rgba(120, 70, 70, .25)';
+    fx.lineWidth = u * .005;
+    for (const [x, y] of [[0, 0], [w, 0], [0, h], [w, h]]) {
+      fx.beginPath();
+      fx.moveTo(x, y);
+      fx.lineTo(cx, cy);
+      fx.stroke();
+    }
+
+    // 케이크 귀신
+    const step = t * (9 + run * 8);
+    const near = u / 620;
+    const scale = near * (lerp(.14, 1.25, run * run) + lunge * 2.1);
+    const x = cx + Math.sin(step * .5) * u * .09 * (1 - lunge);
+    const y = cy + lerp(0, h * .08, run) - Math.abs(Math.sin(step)) * u * .07 * run * (1 - lunge) + lunge * u * .03;
+    fx.save();
+    fx.translate(x, y);
+    fx.rotate(Math.sin(step * .5) * .13 * (1 - lunge));
+    fx.scale(scale, scale);
+    cakeGhost(step);
+    fx.restore();
+    fx.restore();
+
+    // 손전등, 노이즈, 주사선
+    const light = fx.createRadialGradient(cx, cy, u * .12, cx, cy, u * .78);
+    light.addColorStop(0, 'rgba(0, 0, 0, .05)');
+    light.addColorStop(.6, 'rgba(0, 0, 0, .55)');
+    light.addColorStop(1, 'rgba(0, 0, 0, .96)');
+    fx.fillStyle = light;
+    fx.fillRect(0, 0, w, h);
+    for (let i = 0; i < 900; i++) {
+      fx.fillStyle = `rgba(255, 255, 255, ${Math.random() * .14})`;
+      fx.fillRect(Math.random() * w, Math.random() * h, 2, 2);
+    }
+    fx.fillStyle = 'rgba(0, 0, 0, .22)';
+    for (let line = 0; line < h; line += 4) fx.fillRect(0, line, w, 1);
+
+    fx.font = `${Math.round(u * .045)}px Galmuri11, monospace`;
+    fx.fillStyle = '#fff';
+    fx.fillText(`11.27  00:00:0${Math.floor(t)}`, u * .05, h - u * .05);
+    fx.fillText('REC', u * .1, u * .085);
+    if (t % 1 < .6) oval(u * .065, u * .07, u * .016, u * .016, '#ff2b1c');
+  }
+
+  // 발소리와 마지막 효과음
+  function chaseSound() {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    audio ??= new Ctx();
+    audio.resume();
+    sound = audio.createGain();
+    sound.connect(audio.destination);
+    const now = audio.currentTime;
+    const note = (type, from, to, at, dur, volume) => {
+      const osc = audio.createOscillator();
+      const gain = audio.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(from, now + at);
+      osc.frequency.exponentialRampToValueAtTime(to, now + at + dur);
+      gain.gain.setValueAtTime(volume, now + at);
+      gain.gain.exponentialRampToValueAtTime(.001, now + at + dur);
+      osc.connect(gain).connect(sound);
+      osc.start(now + at);
+      osc.stop(now + at + dur);
+    };
+    for (let at = .9, gap = .36; at < LUNGE; at += gap, gap = Math.max(.15, gap * .92)) {
+      note('sine', 130, 45, at, .13, .1 + at * .05);
+    }
+    for (const f of [620, 660, 935]) note('sawtooth', f, f * 1.5, LUNGE, .9, .07);
+  }
+
+  function showEnd() {
+    render(CUT);
+    scareEnd.hidden = false;
+    $('sorry').focus();
+  }
+
+  function play() {
+    stopChase();
+    scareEnd.hidden = true;
+    const k = Math.min(1, 900 / Math.max(innerWidth, innerHeight));
+    film.width = Math.round(innerWidth * k);
+    film.height = Math.round(innerHeight * k);
+    // 동작 줄이기 설정이면 정지 화면만 보여줌
+    if (reduced) {
+      render(3.8);
+      scareEnd.hidden = false;
+      $('sorry').focus();
+      return;
+    }
+    $('scareClose').focus();
+    chaseSound();
+    startedAt = performance.now();
+    const frame = now => {
+      const t = Math.max(0, (now - startedAt) / 1000);
+      if (t >= CUT) return showEnd();
+      render(t);
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+  }
+
+  function stopChase() {
+    cancelAnimationFrame(raf);
+    sound?.disconnect();
+    sound = null;
+  }
+
   $('old').addEventListener('click', () => {
     pollResult.textContent = '';
     pieces = [];
     scare.hidden = false;
-    $('sorry').focus();
+    play();
   });
   function closeScare() {
     if (scare.hidden) return;
+    stopChase();
     scare.hidden = true;
     $('young').focus();
   }
-  scare.addEventListener('click', closeScare);
+  $('sorry').addEventListener('click', closeScare);
+  $('scareClose').addEventListener('click', closeScare);
+  $('replay').addEventListener('click', play);
   addEventListener('keydown', e => { if (e.key === 'Escape') closeScare(); });
   $('young').addEventListener('click', e => {
     pollResult.textContent = '사랑해 💖';
