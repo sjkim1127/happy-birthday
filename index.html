@@ -6,139 +6,276 @@
 <title>김성주, 생일 축하해! 🎂</title>
 <meta name="description" content="김성주 만 22세 생일 파티 — 촛불을 끄고 소원을 빌어보세요">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     min-height: 100vh;
     min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow-x: hidden;
-    font-family: 'Jua', system-ui, sans-serif;
-    color: #fff;
-    background: radial-gradient(circle at 50% 20%, #4b2a7b, #1b1038 60%, #0d0820);
-    transition: filter .6s;
+    font-family: Galmuri11, monospace;
+    font-size: 14px;
+    color: #111;
+    background: #3f7fe0;
   }
-  main { position: relative; z-index: 2; text-align: center; padding: 24px 16px; }
-  h1 {
-    font-size: clamp(2.4rem, 10vw, 4.8rem);
-    font-weight: 400;
-    word-break: keep-all;
-    text-shadow: 0 4px 24px rgba(255, 120, 190, .6);
-  }
-  h1 span { display: inline-block; animation: bounce 1.6s ease-in-out infinite; }
-  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  #message { margin-top: 12px; font-size: clamp(1rem, 4vw, 1.35rem); color: #ffd9ec; min-height: 1.6em; word-break: keep-all; }
+  [hidden] { display: none !important; }
 
-  .age {
-    display: inline-block; margin-bottom: 12px; padding: 6px 18px; border-radius: 999px;
-    font-size: 1.2rem; color: #2a1650; background: #ffe27a;
-  }
-  .timer {
-    display: inline-block; margin-top: 16px; padding: 10px 24px; border-radius: 18px;
-    background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .2);
-  }
-  #timerLabel { font-size: 1rem; color: #cbb8ff; }
-  #countdown { display: block; font-size: clamp(2rem, 9vw, 3rem); font-variant-numeric: tabular-nums; letter-spacing: 2px; }
+  /* 배경: 하늘과 초록 언덕 */
+  .wallpaper { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
 
-  .cake { position: relative; width: 270px; height: 230px; margin: 20px auto 0; }
-  .layer { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 16px 16px 8px 8px; }
+  .desk {
+    display: flex; flex-direction: column; align-items: center; gap: 44px;
+    padding: 32px 20px 100px; max-width: 1180px; margin: 0 auto;
+  }
+  .col { display: contents; }
+
+  /* 창 */
+  .window {
+    position: relative; width: 100%; max-width: 350px; padding: 3px;
+    background: #c3c7cb;
+    border: 2px solid; border-color: #fff #222 #222 #fff;
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, .28);
+  }
+  .titlebar {
+    display: flex; align-items: center; gap: 3px; padding: 3px 3px 3px 6px;
+    color: #fff; font-weight: bold;
+    background: linear-gradient(90deg, #08107b, #1488d0);
+    cursor: grab; user-select: none; -webkit-user-select: none; touch-action: none;
+  }
+  .titlebar b { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ctl {
+    display: grid; place-items: center; width: 20px; height: 18px;
+    font: bold 12px Galmuri11, monospace; line-height: 1; color: #000; background: #c3c7cb;
+    border: 2px solid; border-color: #fff #222 #222 #fff;
+  }
+  button.ctl { cursor: pointer; }
+  .body { padding: 14px; text-align: center; word-break: keep-all; }
+  .btn {
+    font: 14px Galmuri11, monospace; color: #000; background: #c3c7cb; padding: 7px 14px; cursor: pointer;
+    border: 2px solid; border-color: #fff #222 #222 #fff; box-shadow: inset -1px -1px 0 #808488;
+  }
+  .btn:active, .ctl:active, .cell:active { border-color: #222 #fff #fff #222; }
+  button:focus-visible { outline: 2px dotted #000; outline-offset: -5px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
+  .sunken { background: #fff; border: 2px solid; border-color: #666 #fff #fff #666; }
+
+  /* 메인 창 */
+  #party .body { padding-top: 18px; }
+  .age { display: inline-block; padding: 3px 12px; color: #fff; background: #ff4fa3; border: 2px solid #000; box-shadow: 3px 3px 0 #000; }
+  h1 { margin-top: 14px; font: 34px/1.35 Galmuri14, monospace; color: #08107b; text-shadow: 3px 3px 0 #ffb3da; }
+  #message { margin-top: 10px; min-height: 3em; line-height: 1.5; }
+
+  .cake { position: relative; width: 270px; height: 220px; margin: 4px auto 0; }
+  .layer { position: absolute; left: 50%; transform: translateX(-50%); border: 3px solid #000; }
   .layer::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 26px;
-    border-radius: 16px 16px 0 0;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 30px;
     background:
-      radial-gradient(circle at 15px 18px, var(--icing) 15px, transparent 16px) 0 0 / 30px 34px repeat-x,
+      linear-gradient(90deg, var(--icing) 50%, transparent 50%) 0 18px / 36px 9px repeat-x,
       linear-gradient(var(--icing) 18px, transparent 18px);
   }
-  .bottom { bottom: 14px; width: 250px; height: 82px; background: #c9668f; --icing: #fff1f6; }
-  .top { bottom: 94px; width: 180px; height: 64px; background: #f09ab8; --icing: #fff8e1; }
-  .plate { position: absolute; bottom: 0; left: 0; width: 100%; height: 16px; border-radius: 50%; background: #d9d3ee; }
-
-  .candles { position: absolute; bottom: 156px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; }
-  .candle { position: relative; width: 28px; height: 74px; border: 0; background: none; cursor: pointer; }
+  .bottom { bottom: 12px; width: 246px; height: 82px; background: #e0559a; --icing: #fff1f6; }
+  .top { bottom: 91px; width: 174px; height: 64px; background: #ff93c4; --icing: #fff6b8; }
+  .plate { position: absolute; bottom: 0; left: 0; width: 100%; height: 15px; background: #fff; border: 3px solid #000; }
+  .candles { position: absolute; bottom: 152px; left: 0; right: 0; display: flex; justify-content: center; gap: 4px; }
+  .candle { position: relative; width: 28px; height: 66px; border: 0; background: none; cursor: pointer; }
   .candle::after {
-    content: ''; position: absolute; bottom: 0; left: 9px; width: 10px; height: 46px; border-radius: 3px;
+    content: ''; position: absolute; bottom: 0; left: 8px; width: 12px; height: 42px; border: 2px solid #000;
     background: repeating-linear-gradient(45deg, #fff 0 5px, var(--c) 5px 10px);
   }
   .flame {
-    position: absolute; bottom: 48px; left: 7px; width: 14px; height: 22px;
-    border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
-    background: radial-gradient(circle at 50% 70%, #fff7b0, #ffb02e 55%, #ff5a36);
-    box-shadow: 0 0 18px 6px rgba(255, 170, 50, .65);
-    animation: flicker .35s ease-in-out infinite alternate;
-    transform-origin: bottom center;
-    transition: opacity .25s;
+    position: absolute; bottom: 43px; left: 6px; width: 16px; height: 20px;
+    background: linear-gradient(#ff3b1f 0 30%, #ff9d00 30% 65%, #fff35c 65%);
+    clip-path: polygon(37% 0, 63% 0, 63% 20%, 82% 20%, 82% 40%, 100% 40%, 100% 80%, 82% 80%, 82% 100%, 18% 100%, 18% 80%, 0 80%, 0 40%, 18% 40%, 18% 20%, 37% 20%);
+    animation: flicker .4s steps(1) infinite;
   }
-  @keyframes flicker { from { transform: scale(1) rotate(-3deg); } to { transform: scale(1.1, .92) rotate(3deg); } }
-  .candle.out .flame { opacity: 0; box-shadow: none; }
-  .candle:focus-visible { outline: 2px dashed #fff; border-radius: 6px; }
+  @keyframes flicker { 50% { transform: scaleX(-1) translateY(-2px); } }
+  .candle.out .flame { opacity: 0; }
 
-  .buttons { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-  .buttons button {
-    font: inherit; font-size: 1.1rem; color: #2a1650; background: #ffe27a;
-    border: 0; border-radius: 999px; padding: 12px 22px; cursor: pointer;
-    box-shadow: 0 5px 0 #c99f2a; transition: transform .1s, box-shadow .1s;
+  /* 타이머, 지뢰찾기의 빨간 숫자 */
+  .led { background: #000; color: #ff2b1c; font-family: Galmuri14, monospace; text-shadow: 0 0 6px rgba(255, 43, 28, .7); }
+  #countdown { display: block; margin-top: 10px; padding: 10px 4px; font-size: 36px; letter-spacing: 2px; }
+
+  /* 오류 창 */
+  .alert { display: flex; align-items: center; gap: 12px; text-align: left; line-height: 1.6; }
+  .alert canvas { width: 48px; height: 48px; flex: none; image-rendering: pixelated; }
+
+  /* 지뢰찾기 */
+  .mine-top { display: flex; align-items: center; justify-content: space-between; padding: 6px; margin-bottom: 10px; border: 2px solid; border-color: #666 #fff #fff #666; }
+  .mine-top .led { padding: 3px 6px; font-size: 22px; }
+  #face { width: 38px; height: 38px; padding: 0; font-size: 20px; }
+  .board { display: grid; grid-template-columns: repeat(8, 30px); justify-content: center; }
+  .cell {
+    width: 30px; height: 30px; font: bold 15px Galmuri11, monospace; background: #c3c7cb; cursor: pointer;
+    border: 3px solid; border-color: #fff #666 #666 #fff; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
   }
-  .buttons button:active { transform: translateY(4px); box-shadow: 0 1px 0 #c99f2a; }
+  .cell.open { border: 1px solid #888; cursor: default; }
+  .cell.boom { background: #ff2b1c; }
+  #flagMode[aria-pressed="true"] { border-color: #222 #fff #fff #222; background: #fff; }
+  #mineText { margin-top: 8px; }
 
-  canvas { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
-  .balloon {
-    position: fixed; bottom: -140px; z-index: 1; width: 60px; height: 76px; border: 0; cursor: pointer;
-    border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%;
-    background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.75), var(--c) 38%);
-    animation: rise var(--t) linear forwards;
-    opacity: .88;
+  /* 로딩 */
+  .progress { display: flex; gap: 2px; height: 28px; margin: 12px 0; padding: 2px; }
+  .progress i { flex: 1; background: transparent; }
+  .progress i.on { background: #0a1f9c; }
+
+  /* 스티커 */
+  .sticker {
+    position: absolute; z-index: 2; width: var(--s, 64px); height: var(--s, 64px);
+    image-rendering: pixelated; cursor: grab; touch-action: none;
+    filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, .25));
+    animation: float 2.4s steps(4) infinite alternate;
   }
-  .balloon::after { content: ''; position: absolute; top: 100%; left: 50%; width: 1px; height: 55px; background: rgba(255,255,255,.45); }
-  @keyframes rise { to { transform: translate(var(--x), calc(-100vh - 280px)); } }
+  @keyframes float { to { transform: translateY(-8px); } }
 
-  @media (prefers-reduced-motion: reduce) { h1 span, .flame { animation: none; } .balloon { display: none; } }
+  /* 넓은 화면에서만 보이는 바닥 스티커 */
+  .lawn { display: none; }
+  @media (min-width: 1000px) and (min-height: 800px) { .lawn { display: block; } }
+  .lawn .sticker { position: fixed; }
+
+  /* 작업 표시줄 */
+  .taskbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; display: flex; justify-content: space-between; gap: 8px;
+    padding: 4px 4px calc(4px + env(safe-area-inset-bottom)); background: #c3c7cb; border-top: 2px solid #fff;
+  }
+  #start { display: flex; align-items: center; gap: 6px; padding: 4px 12px; font-weight: bold; }
+  #start canvas { width: 24px; height: 24px; image-rendering: pixelated; }
+  #clock { display: grid; place-items: center; padding: 0 12px; border: 2px solid; border-color: #666 #fff #fff #666; }
+
+  #confetti { position: fixed; inset: 0; z-index: 2000; pointer-events: none; }
+
+  @media (min-width: 1000px) {
+    .desk { flex-direction: row; align-items: flex-start; justify-content: center; gap: 44px; }
+    .col { display: flex; flex: 1; flex-direction: column; align-items: center; gap: 48px; max-width: 350px; }
+    .col:first-child { padding-top: 56px; }
+    .col:last-child { padding-top: 20px; }
+  }
+  @media (max-width: 999px) {
+    #party { order: 1; } #timerWin { order: 2; } #errorWin { order: 3; } #mineWin { order: 4; } #loadWin { order: 5; }
+  }
+  @media (prefers-reduced-motion: reduce) { .sticker, .flame { animation: none; } }
 </style>
 </head>
 <body>
-<main>
-  <p class="age">만 22세</p>
-  <h1>김성주,<br><span>🎉</span> 생일 축하해! <span style="animation-delay:.3s">🎉</span></h1>
-  <p id="message" aria-live="polite">소원을 빌고 촛불을 눌러서 꺼보세요 ✨</p>
+<svg class="wallpaper" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2463d6"/><stop offset=".75" stop-color="#b9dcff"/></linearGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ad12f"/><stop offset="1" stop-color="#2f6b0c"/></linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12"/></filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#sky)"/>
+  <g fill="#fff" opacity=".85" filter="url(#soft)">
+    <ellipse cx="230" cy="150" rx="130" ry="34"/><ellipse cx="290" cy="122" rx="70" ry="40"/>
+    <ellipse cx="640" cy="90" rx="110" ry="24"/><ellipse cx="920" cy="230" rx="160" ry="36"/><ellipse cx="870" cy="200" rx="70" ry="38"/>
+    <ellipse cx="500" cy="380" rx="180" ry="26"/><ellipse cx="1110" cy="80" rx="90" ry="26"/>
+  </g>
+  <path d="M0 560 C220 450 420 470 640 540 C860 610 1020 520 1200 480 V800 H0Z" fill="url(#hill)"/>
+  <path d="M0 660 C300 580 520 700 820 650 C1000 620 1100 640 1200 670 V800 H0Z" fill="#4c9414" opacity=".7"/>
+</svg>
 
-  <div class="timer" role="timer">
-    <span id="timerLabel">생일이 끝나기까지</span>
-    <strong id="countdown">--:--:--</strong>
+<main class="desk">
+  <div class="col">
+    <section class="window" id="timerWin">
+      <div class="titlebar"><b>생일 타이머</b><span class="ctl" aria-hidden="true">_</span><span class="ctl" aria-hidden="true">□</span><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="body" role="timer">
+        <p id="timerLabel">생일이 끝나기까지</p>
+        <strong id="countdown" class="led sunken">--:--:--</strong>
+      </div>
+      <canvas class="sticker" data-emoji="💾" style="left:-18px; bottom:-34px"></canvas>
+    </section>
+
+    <section class="window" id="errorWin">
+      <div class="titlebar"><b>Error</b><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="body">
+        <div class="alert"><canvas data-emoji="⚠️"></canvas><p id="errorText" aria-live="polite">나이 확인 오류:<br>만 22세 외의 숫자는<br>찾을 수 없습니다.</p></div>
+        <div class="buttons"><button class="btn" id="agree">인정</button></div>
+      </div>
+      <canvas class="sticker" data-emoji="🐠" style="right:-16px; bottom:-38px; --s:76px"></canvas>
+    </section>
   </div>
 
-  <div class="cake">
-    <div class="plate"></div>
-    <div class="layer bottom"></div>
-    <div class="layer top"></div>
-    <div class="candles" id="candles"></div>
+  <div class="col">
+    <section class="window" id="party">
+      <div class="titlebar"><b>생일파티.exe</b><span class="ctl" aria-hidden="true">_</span><span class="ctl" aria-hidden="true">□</span><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="body">
+        <p class="age">만 22세</p>
+        <h1>김성주<br>생일 축하해!</h1>
+        <p id="message" aria-live="polite">소원을 빌고 촛불을 눌러서 꺼보세요 ✨</p>
+        <div class="cake">
+          <div class="plate"></div>
+          <div class="layer bottom"></div>
+          <div class="layer top"></div>
+          <div class="candles" id="candles"></div>
+        </div>
+        <div class="buttons">
+          <button class="btn" id="song">♪ 노래</button>
+          <button class="btn" id="boom">폭죽</button>
+          <button class="btn" id="relight">다시 불 켜기</button>
+        </div>
+      </div>
+      <canvas class="sticker" data-emoji="💎" style="right:-18px; top:62px; --s:56px"></canvas>
+      <canvas class="sticker" data-emoji="🌍" style="left:-20px; top:48px; --s:56px"></canvas>
+      <canvas class="sticker" data-emoji="💿" style="right:-18px; bottom:-34px"></canvas>
+    </section>
   </div>
 
-  <div class="buttons">
-    <button id="song">🎵 노래 듣기</button>
-    <button id="boom">🎊 폭죽 터뜨리기</button>
-    <button id="relight">🕯️ 다시 불 켜기</button>
+  <div class="col">
+    <section class="window" id="mineWin">
+      <div class="titlebar"><b>지뢰찾기</b><span class="ctl" aria-hidden="true">_</span><span class="ctl" aria-hidden="true">□</span><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="body">
+        <div class="mine-top"><span class="led" id="mineCount">008</span><button class="btn" id="face" aria-label="새 게임">🙂</button><span class="led" id="mineTime">000</span></div>
+        <div class="board" id="board"></div>
+        <p id="mineText" aria-live="polite">지뢰를 피해서 선물을 지켜라!</p>
+        <div class="buttons"><button class="btn" id="flagMode" aria-pressed="false">🚩 깃발 모드</button></div>
+      </div>
+      <canvas class="sticker" data-emoji="🖥️" style="left:-22px; bottom:-34px; --s:72px"></canvas>
+    </section>
+
+    <section class="window" id="loadWin">
+      <div class="titlebar"><b>다운로드</b><button class="ctl close" aria-label="창 닫기">×</button></div>
+      <div class="body">
+        <p id="loadText">행복 다운로드 중... 0%</p>
+        <div class="progress sunken" id="progress"></div>
+        <button class="btn" id="reload">다시 받기</button>
+      </div>
+      <canvas class="sticker" data-emoji="🌳" style="right:-20px; bottom:-30px; --s:76px"></canvas>
+      <canvas class="sticker" data-emoji="📼" style="left:-20px; bottom:-28px; --s:56px"></canvas>
+    </section>
   </div>
 </main>
+
+<div class="lawn" aria-hidden="true">
+  <canvas class="sticker" data-emoji="🗑️" style="left:5%; bottom:70px; --s:84px"></canvas>
+  <canvas class="sticker" data-emoji="📁" style="left:17%; bottom:150px"></canvas>
+  <canvas class="sticker" data-emoji="🎁" style="left:30%; bottom:64px; --s:92px"></canvas>
+  <canvas class="sticker" data-emoji="🃏" style="right:30%; bottom:120px; --s:72px"></canvas>
+  <canvas class="sticker" data-emoji="🏠" style="right:15%; bottom:68px; --s:88px"></canvas>
+  <canvas class="sticker" data-emoji="🎈" style="right:4%; bottom:150px; --s:84px"></canvas>
+</div>
+
+<footer class="taskbar">
+  <button class="btn" id="start"><canvas data-emoji="🎂"></canvas>시작</button>
+  <span id="clock"></span>
+</footer>
 <canvas id="confetti"></canvas>
 
 <script>
-  const colors = ['#ff6b9d', '#ffd166', '#06d6a0', '#4cc9f0', '#b388ff'];
+  const $ = id => document.getElementById(id);
+  const colors = ['#ff4fa3', '#ffd400', '#00c96b', '#1ec8ff', '#9b5cff'];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const message = document.getElementById('message');
+  const message = $('message');
   const startText = message.textContent;
 
   // 타이머: 한국 시간 11월 27일 0시까지
   const END = new Date('2026-11-27T00:00:00+09:00').getTime();
-  const countdown = document.getElementById('countdown');
-  const timerLabel = document.getElementById('timerLabel');
+  const countdown = $('countdown');
+  const timerLabel = $('timerLabel');
 
   function tick(now = Date.now()) {
+    $('clock').textContent = new Date(now).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: '2-digit' });
     const left = Math.max(0, Math.ceil((END - now) / 1000));
     if (!left) {
       timerLabel.textContent = '2026년 생일은 여기까지!';
-      countdown.textContent = '내년에 또 만나 👋';
+      countdown.textContent = '00:00:00';
       return;
     }
     timerLabel.textContent = '생일이 끝나기까지';
@@ -150,8 +287,69 @@
   tick();
   setInterval(tick, 250);
 
+  // 이모지를 픽셀 아트 스티커로 그리기
+  function pixelate(canvas) {
+    const n = 32;
+    canvas.width = canvas.height = n;
+    const g = canvas.getContext('2d', { willReadFrequently: true });
+    g.font = '26px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.fillText(canvas.dataset.emoji, n / 2, n / 2 + 1);
+    const img = g.getImageData(0, 0, n, n);
+    const d = img.data;
+    const solid = (x, y) => x >= 0 && y >= 0 && x < n && y < n && d[(y * n + x) * 4 + 3] > 110;
+    const mask = Array.from({ length: n * n }, (_, i) => solid(i % n, Math.floor(i / n)));
+    for (let i = 0; i < n * n; i++) {
+      const x = i % n, y = Math.floor(i / n), p = i * 4;
+      if (mask[i]) {
+        for (let c = 0; c < 3; c++) d[p + c] = Math.round(d[p + c] / 51) * 51;
+        d[p + 3] = 255;
+      } else {
+        const edge = (x > 0 && mask[i - 1]) || (x < n - 1 && mask[i + 1]) || mask[i - n] || mask[i + n];
+        d[p] = d[p + 1] = d[p + 2] = 0;
+        d[p + 3] = edge ? 255 : 0;
+      }
+    }
+    g.putImageData(img, 0, 0);
+  }
+  document.querySelectorAll('canvas[data-emoji]').forEach(pixelate);
+
+  // 창과 스티커 끌어서 옮기기
+  let top_ = 10;
+  function draggable(handle, target) {
+    let x = 0, y = 0, from;
+    handle.addEventListener('pointerdown', e => {
+      if (e.button || e.target.closest('button')) return;
+      from = { x: e.clientX - x, y: e.clientY - y };
+      target.style.zIndex = ++top_;
+      handle.setPointerCapture(e.pointerId);
+    });
+    handle.addEventListener('pointermove', e => {
+      if (!from) return;
+      x = e.clientX - from.x;
+      y = e.clientY - from.y;
+      target.style.translate = `${x}px ${y}px`;
+    });
+    const stop = () => { from = null; };
+    handle.addEventListener('pointerup', stop);
+    handle.addEventListener('pointercancel', stop);
+  }
+  document.querySelectorAll('.window').forEach(w => {
+    draggable(w.querySelector('.titlebar'), w);
+    w.querySelector('.close').addEventListener('click', () => { w.hidden = true; });
+  });
+  document.querySelectorAll('.sticker').forEach(s => draggable(s, s));
+
+  // 시작 버튼: 닫은 창 다시 열기
+  $('start').addEventListener('click', e => {
+    document.querySelectorAll('.window').forEach(w => { w.hidden = false; });
+    const r = e.currentTarget.getBoundingClientRect();
+    burst(r.right, r.top, 80);
+  });
+
   // 색종이
-  const canvas = document.getElementById('confetti');
+  const canvas = $('confetti');
   const ctx = canvas.getContext('2d');
   let pieces = [];
   let running = false;
@@ -169,9 +367,7 @@
         x, y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed - 4,
-        size: 5 + Math.random() * 7,
-        rot: Math.random() * Math.PI,
-        spin: (Math.random() - .5) * .3,
+        size: Math.random() < .5 ? 6 : 10,
         color: colors[i % colors.length],
       });
     }
@@ -185,13 +381,8 @@
       p.vy = p.vy * .98 + .22;
       p.x += p.vx;
       p.y += p.vy;
-      p.rot += p.spin;
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot);
       ctx.fillStyle = p.color;
-      ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
-      ctx.restore();
+      ctx.fillRect(Math.round(p.x / 4) * 4, Math.round(p.y / 4) * 4, p.size, p.size);
     }
     pieces = pieces.filter(p => p.y < canvas.height + 20);
     running = pieces.length > 0;
@@ -199,7 +390,7 @@
   }
 
   // 촛불
-  const box = document.getElementById('candles');
+  const box = $('candles');
   colors.forEach((color, i) => {
     const candle = document.createElement('button');
     candle.className = 'candle';
@@ -211,7 +402,7 @@
       candle.classList.add('out');
       const left = box.querySelectorAll('.candle:not(.out)').length;
       if (left) {
-        message.textContent = `후~ 🌬️ 촛불이 ${left}개 남았어요`;
+        message.textContent = `후~ 촛불이 ${left}개 남았어요`;
       } else {
         message.textContent = '소원이 꼭 이루어지길! 행복한 하루 보내 🥳';
         burst(innerWidth * .25, innerHeight * .35);
@@ -222,13 +413,13 @@
     box.appendChild(candle);
   });
 
-  document.getElementById('relight').addEventListener('click', () => {
+  $('relight').addEventListener('click', () => {
     box.querySelectorAll('.candle').forEach(c => c.classList.remove('out'));
     message.textContent = startText;
   });
-  document.getElementById('boom').addEventListener('click', () => burst());
+  $('boom').addEventListener('click', () => burst());
 
-  // 생일 축하 멜로디 (Web Audio)
+  // 생일 축하 멜로디 (8비트 느낌)
   let audio;
   let playingUntil = 0;
   function playSong() {
@@ -250,10 +441,10 @@
       const dur = length * beat;
       const osc = audio.createOscillator();
       const gain = audio.createGain();
-      osc.type = 'triangle';
+      osc.type = 'square';
       osc.frequency.value = freq;
       gain.gain.setValueAtTime(0, t);
-      gain.gain.linearRampToValueAtTime(.22, t + .02);
+      gain.gain.linearRampToValueAtTime(.08, t + .02);
       gain.gain.exponentialRampToValueAtTime(.001, t + dur);
       osc.connect(gain).connect(audio.destination);
       osc.start(t);
@@ -262,25 +453,123 @@
     }
     playingUntil = t;
   }
-  document.getElementById('song').addEventListener('click', playSong);
+  $('song').addEventListener('click', playSong);
 
-  // 풍선
-  function balloon() {
-    if (document.hidden || reduced) return;
-    const b = document.createElement('button');
-    b.className = 'balloon';
-    b.tabIndex = -1;
-    b.setAttribute('aria-label', '풍선 터뜨리기');
-    b.style.left = Math.random() * 90 + '%';
-    b.style.setProperty('--c', colors[Math.floor(Math.random() * colors.length)]);
-    b.style.setProperty('--t', 9 + Math.random() * 6 + 's');
-    b.style.setProperty('--x', (Math.random() - .5) * 160 + 'px');
-    b.addEventListener('pointerdown', e => { burst(e.clientX, e.clientY, 30); b.remove(); });
-    b.addEventListener('animationend', () => b.remove());
-    document.body.appendChild(b);
+  // 오류 창
+  $('agree').addEventListener('click', () => {
+    $('errorText').innerHTML = '확인 완료.<br>당신은 만 22세입니다.<br>반박은 받지 않습니다.';
+    burst(innerWidth / 2, innerHeight / 2, 60);
+  });
+
+  // 지뢰찾기 (8×8, 지뢰 8개)
+  const SIZE = 8, MINES = 8;
+  const board = $('board');
+  const flagMode = $('flagMode');
+  let cells, started, over, seconds, timer;
+
+  const around = i => {
+    const x = i % SIZE, y = Math.floor(i / SIZE), list = [];
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        const a = x + dx, b = y + dy;
+        if ((dx || dy) && a >= 0 && a < SIZE && b >= 0 && b < SIZE) list.push(b * SIZE + a);
+      }
+    }
+    return list;
+  };
+  const pad = n => String(n).padStart(3, '0');
+
+  function newGame() {
+    clearInterval(timer);
+    started = over = false;
+    seconds = 0;
+    $('mineTime').textContent = pad(0);
+    $('mineCount').textContent = pad(MINES);
+    $('face').textContent = '🙂';
+    $('mineText').textContent = '지뢰를 피해서 선물을 지켜라!';
+    board.innerHTML = '';
+    cells = Array.from({ length: SIZE * SIZE }, (_, i) => {
+      const el = document.createElement('button');
+      el.className = 'cell';
+      el.setAttribute('aria-label', `${Math.floor(i / SIZE) + 1}행 ${i % SIZE + 1}열`);
+      el.addEventListener('click', () => flagMode.getAttribute('aria-pressed') === 'true' ? flag(i) : open(i));
+      el.addEventListener('contextmenu', e => { e.preventDefault(); flag(i); });
+      board.appendChild(el);
+      return { el, mine: false, open: false, flag: false };
+    });
   }
-  setInterval(balloon, 1100);
-  balloon();
+
+  function flag(i) {
+    const c = cells[i];
+    if (over || c.open) return;
+    c.flag = !c.flag;
+    c.el.textContent = c.flag ? '🚩' : '';
+    $('mineCount').textContent = pad(Math.max(0, MINES - cells.filter(c => c.flag).length));
+  }
+
+  // 첫 칸과 그 주변에는 지뢰를 두지 않음
+  function plant(first) {
+    const safe = new Set([first, ...around(first)]);
+    let placed = 0;
+    while (placed < MINES) {
+      const i = Math.floor(Math.random() * cells.length);
+      if (!safe.has(i) && !cells[i].mine) { cells[i].mine = true; placed++; }
+    }
+    started = true;
+    timer = setInterval(() => { $('mineTime').textContent = pad(Math.min(999, ++seconds)); }, 1000);
+  }
+
+  function open(i) {
+    if (over || cells[i].open || cells[i].flag) return;
+    if (!started) plant(i);
+    if (cells[i].mine) return finish(false, i);
+    const stack = [i];
+    while (stack.length) {
+      const j = stack.pop(), c = cells[j];
+      if (c.open || c.flag) continue;
+      c.open = true;
+      c.el.classList.add('open');
+      const n = around(j).filter(k => cells[k].mine).length;
+      c.el.textContent = n || '';
+      c.el.style.color = ['', '#0000d6', '#007a00', '#d60000', '#00007a', '#7a0000'][n] || '#000';
+      if (!n) stack.push(...around(j));
+    }
+    if (cells.filter(c => c.open).length === cells.length - MINES) finish(true);
+  }
+
+  function finish(won, hit) {
+    over = true;
+    clearInterval(timer);
+    $('face').textContent = won ? '😎' : '😵';
+    $('mineText').textContent = won ? '선물을 지켰다! 생일 축하해 🎁' : '펑! 얼굴을 눌러 다시 도전';
+    if (won) { burst(); playSong(); return; }
+    cells.forEach(c => { if (c.mine) c.el.textContent = '💣'; });
+    cells[hit].el.classList.add('boom');
+  }
+
+  $('face').addEventListener('click', newGame);
+  flagMode.addEventListener('click', () => {
+    flagMode.setAttribute('aria-pressed', flagMode.getAttribute('aria-pressed') !== 'true');
+  });
+  newGame();
+
+  // 행복 다운로드
+  const bar = $('progress');
+  for (let i = 0; i < 20; i++) bar.appendChild(document.createElement('i'));
+  let percent, loader;
+  function download() {
+    clearInterval(loader);
+    percent = 0;
+    loader = setInterval(() => {
+      percent = Math.min(100, percent + 5);
+      [...bar.children].forEach((el, i) => el.classList.toggle('on', i < percent / 5));
+      $('loadText').textContent = percent < 100 ? `행복 다운로드 중... ${percent}%` : '다운로드 완료! 행복 100% 💖';
+      if (percent === 100) clearInterval(loader);
+    }, 350);
+  }
+  $('reload').addEventListener('click', download);
+  download();
+
   burst();
 </script>
 </body>
