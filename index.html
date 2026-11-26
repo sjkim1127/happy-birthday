@@ -177,7 +177,7 @@
     <section class="window" id="timerWin">
       <div class="titlebar"><b>생일 타이머</b><span class="ctl" aria-hidden="true">_</span><span class="ctl" aria-hidden="true">□</span><button class="ctl close" aria-label="창 닫기">×</button></div>
       <div class="body" role="timer">
-        <p id="timerLabel">생일이 끝나기까지</p>
+        <p id="timerLabel">생일 시작까지</p>
         <strong id="countdown" class="led sunken">--:--:--</strong>
       </div>
       <canvas class="sticker" data-emoji="💾" style="left:-18px; bottom:-34px"></canvas>
@@ -265,20 +265,27 @@
   const message = $('message');
   const startText = message.textContent;
 
-  // 타이머: 한국 시간 11월 27일 0시까지
-  const END = new Date('2026-11-27T00:00:00+09:00').getTime();
+  // 타이머 (한국 시간): 11월 27일 0시에 생일 시작, 28일 0시에 끝
+  const START = new Date('2026-11-27T00:00:00+09:00').getTime();
+  const END = new Date('2026-11-28T00:00:00+09:00').getTime();
   const countdown = $('countdown');
   const timerLabel = $('timerLabel');
+  let wasBefore = false;
 
   function tick(now = Date.now()) {
     $('clock').textContent = new Date(now).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: '2-digit' });
-    const left = Math.max(0, Math.ceil((END - now) / 1000));
+    const before = now < START;
+    // 페이지를 켜둔 채로 생일이 시작되면 폭죽
+    if (wasBefore && !before && now < END) burst();
+    wasBefore = before;
+
+    const left = Math.max(0, Math.ceil(((before ? START : END) - now) / 1000));
     if (!left) {
       timerLabel.textContent = '2026년 생일은 여기까지!';
       countdown.textContent = '00:00:00';
       return;
     }
-    timerLabel.textContent = '생일이 끝나기까지';
+    timerLabel.textContent = before ? '생일 시작까지' : '🎉 생일 시작! 끝나기까지';
     const h = Math.floor(left / 3600);
     const m = Math.floor(left / 60) % 60;
     const s = left % 60;
