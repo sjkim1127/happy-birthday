@@ -6,134 +6,125 @@
 <title>김성주, 생일 축하해! 🎂</title>
 <meta name="description" content="김성주 만 22세 생일 파티 — 촛불을 끄고 소원을 빌어보세요">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
-<link href="https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    font-family: Galmuri11, monospace;
-    font-size: 14px;
-    color: #111;
-    background: #3f7fe0;
+  @font-face {
+    font-family: DSEG7;
+    src: url('https://cdn.jsdelivr.net/npm/dseg@0.46.0/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff2') format('woff2');
   }
+  :root {
+    --ui: Tahoma, Dotum, '돋움', Gulim, '굴림', 'Nanum Gothic', sans-serif;
+    --title: 'Trebuchet MS', Tahoma, Dotum, '돋움', 'Nanum Gothic', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { min-height: 100vh; min-height: 100dvh; overflow-x: hidden; font-family: var(--ui); font-size: 13px; color: #000; background: #3f7fe0; }
   [hidden] { display: none !important; }
 
   /* 배경: 하늘과 초록 언덕 */
   .wallpaper { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
 
-  .desk {
-    display: flex; flex-direction: column; align-items: center; gap: 44px;
-    padding: 32px 20px 100px; max-width: 1180px; margin: 0 auto;
-  }
+  .desk { display: flex; flex-direction: column; align-items: center; gap: 44px; padding: 32px 20px 100px; max-width: 1180px; margin: 0 auto; }
   .col { display: contents; }
 
   /* 창 */
-  .window {
-    position: relative; width: 100%; max-width: 350px; padding: 3px;
-    background: #c3c7cb;
-    border: 2px solid; border-color: #fff #222 #222 #fff;
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, .28);
-  }
+  .window { position: relative; width: 100%; max-width: 350px; padding: 0 3px 3px; background: #0855dd; border-radius: 8px 8px 0 0; box-shadow: 0 10px 26px rgba(0, 0, 0, .38); }
   .titlebar {
-    display: flex; align-items: center; gap: 3px; padding: 3px 3px 3px 6px;
-    color: #fff; font-weight: bold;
-    background: linear-gradient(90deg, #08107b, #1488d0);
+    display: flex; align-items: center; gap: 2px; height: 31px; margin: 0 -3px; padding: 0 5px 0 9px; border-radius: 8px 8px 0 0;
+    color: #fff; font: bold 14px var(--title); text-shadow: 1px 1px 1px #0f1089;
+    background: linear-gradient(#0997ff, #0053ee 9%, #0050ee 40%, #0066ff 88%, #0066ff 93%, #005bff 95%, #003dd7);
     cursor: grab; user-select: none; -webkit-user-select: none; touch-action: none;
   }
   .titlebar b { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ctl {
-    display: grid; place-items: center; width: 20px; height: 18px;
-    font: bold 12px Galmuri11, monospace; line-height: 1; color: #000; background: #c3c7cb;
-    border: 2px solid; border-color: #fff #222 #222 #fff;
+    display: grid; place-items: center; width: 21px; height: 21px; border: 1px solid #fff; border-radius: 4px;
+    font: bold 14px/1 var(--title); color: #fff; background: radial-gradient(circle at 30% 25%, #7aa7ff, #2a63e0 55%, #1941a5);
   }
   button.ctl { cursor: pointer; }
-  .body { padding: 14px; text-align: center; word-break: keep-all; }
+  button.close, #scareClose { background: radial-gradient(circle at 30% 25%, #f6b39b, #e0532c 55%, #a92a0c); }
+  .ctl:hover { filter: brightness(1.15); }
+  .body { padding: 14px; text-align: center; word-break: keep-all; background: #ece9d8; }
   .btn {
-    font: 14px Galmuri11, monospace; color: #000; background: #c3c7cb; padding: 7px 14px; cursor: pointer;
-    border: 2px solid; border-color: #fff #222 #222 #fff; box-shadow: inset -1px -1px 0 #808488;
+    min-width: 76px; font: 13px var(--ui); color: #000; padding: 6px 14px; cursor: pointer;
+    background: linear-gradient(#fff, #f3f2ec 70%, #d8d3c6); border: 1px solid #003c74; border-radius: 4px;
   }
-  .btn:active, .ctl:active, .cell:active { border-color: #222 #fff #fff #222; }
-  button:focus-visible { outline: 2px dotted #000; outline-offset: -5px; }
+  .btn:hover { box-shadow: inset 0 0 0 2px #f8b636; }
+  .btn:active { background: #dedbd0; box-shadow: inset 1px 1px 3px rgba(0, 0, 0, .25); }
+  button:focus-visible { outline: 1px dotted #000; outline-offset: -4px; }
   .buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
-  .sunken { background: #fff; border: 2px solid; border-color: #666 #fff #fff #666; }
+  .sunken { background: #fff; border: 1px solid #7f9db9; }
 
   /* 메인 창 */
   #party .body { padding-top: 18px; }
-  .age { display: inline-block; padding: 3px 12px; color: #fff; background: #ff4fa3; border: 2px solid #000; box-shadow: 3px 3px 0 #000; }
-  h1 { margin-top: 14px; font: 34px/1.35 Galmuri14, monospace; color: #08107b; text-shadow: 3px 3px 0 #ffb3da; }
-  #message { margin-top: 10px; min-height: 3em; line-height: 1.5; }
+  .age { display: inline-block; padding: 4px 14px; background: #ffffe1; border: 1px solid #000; border-radius: 8px; box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); font-weight: bold; }
+  h1 { margin-top: 12px; font: 800 32px/1.35 var(--title); color: #003399; text-shadow: 1px 1px 0 #fff, 3px 3px 5px rgba(0, 51, 153, .25); }
+  #message { margin-top: 10px; min-height: 3em; line-height: 1.5; font-size: 14px; }
 
   .cake { position: relative; width: 270px; height: 220px; margin: 4px auto 0; }
-  .layer { position: absolute; left: 50%; transform: translateX(-50%); border: 3px solid #000; }
+  .layer { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 18px 18px 10px 10px; box-shadow: inset -22px 0 26px rgba(0, 0, 0, .18), inset 18px 0 20px rgba(255, 255, 255, .25); }
   .layer::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 30px;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 28px; border-radius: 18px 18px 0 0;
     background:
-      linear-gradient(90deg, var(--icing) 50%, transparent 50%) 0 18px / 36px 9px repeat-x,
+      radial-gradient(circle at 15px 18px, var(--icing) 14px, transparent 15px) 0 0 / 30px 34px repeat-x,
       linear-gradient(var(--icing) 18px, transparent 18px);
   }
-  .bottom { bottom: 12px; width: 246px; height: 82px; background: #e0559a; --icing: #fff1f6; }
-  .top { bottom: 91px; width: 174px; height: 64px; background: #ff93c4; --icing: #fff6b8; }
-  .plate { position: absolute; bottom: 0; left: 0; width: 100%; height: 15px; background: #fff; border: 3px solid #000; }
-  .candles { position: absolute; bottom: 152px; left: 0; right: 0; display: flex; justify-content: center; gap: 4px; }
+  .bottom { bottom: 14px; width: 246px; height: 82px; background: #d9608f; --icing: #fff1f6; }
+  .top { bottom: 94px; width: 176px; height: 64px; background: #f595ba; --icing: #fff6cc; }
+  .plate { position: absolute; bottom: 0; left: 0; width: 100%; height: 18px; border-radius: 50%; background: linear-gradient(#fff, #aeb6c8); box-shadow: 0 3px 5px rgba(0, 0, 0, .25); }
+  .candles { position: absolute; bottom: 156px; left: 0; right: 0; display: flex; justify-content: center; gap: 4px; }
   .candle { position: relative; width: 28px; height: 66px; border: 0; background: none; cursor: pointer; }
-  .candle::after {
-    content: ''; position: absolute; bottom: 0; left: 8px; width: 12px; height: 42px; border: 2px solid #000;
-    background: repeating-linear-gradient(45deg, #fff 0 5px, var(--c) 5px 10px);
-  }
+  .candle::after { content: ''; position: absolute; bottom: 0; left: 9px; width: 10px; height: 42px; border-radius: 3px; background: repeating-linear-gradient(45deg, #fff 0 5px, var(--c) 5px 10px); }
   .flame {
-    position: absolute; bottom: 43px; left: 6px; width: 16px; height: 20px;
-    background: linear-gradient(#ff3b1f 0 30%, #ff9d00 30% 65%, #fff35c 65%);
-    clip-path: polygon(37% 0, 63% 0, 63% 20%, 82% 20%, 82% 40%, 100% 40%, 100% 80%, 82% 80%, 82% 100%, 18% 100%, 18% 80%, 0 80%, 0 40%, 18% 40%, 18% 20%, 37% 20%);
-    animation: flicker .4s steps(1) infinite;
+    position: absolute; bottom: 43px; left: 7px; width: 14px; height: 21px; border-radius: 50% / 65% 65% 35% 35%;
+    background: radial-gradient(circle at 50% 70%, #fff7b0, #ffb02e 55%, #ff5a36); box-shadow: 0 0 14px 5px rgba(255, 170, 50, .6);
+    transform-origin: bottom center; animation: flicker .35s ease-in-out infinite alternate;
   }
-  @keyframes flicker { 50% { transform: scaleX(-1) translateY(-2px); } }
-  .candle.out .flame { opacity: 0; }
+  @keyframes flicker { from { transform: scale(1) rotate(-3deg); } to { transform: scale(1.1, .92) rotate(3deg); } }
+  .candle.out .flame { opacity: 0; box-shadow: none; }
 
   /* 타이머, 지뢰찾기의 빨간 숫자 */
-  .led { background: #000; color: #ff2b1c; font-family: Galmuri14, monospace; text-shadow: 0 0 6px rgba(255, 43, 28, .7); }
-  #countdown { display: block; margin-top: 10px; padding: 10px 4px; font-size: 36px; letter-spacing: 2px; }
+  .led { background: #000; color: #ff2b1c; font-family: DSEG7, monospace; font-weight: normal; text-shadow: 0 0 6px rgba(255, 43, 28, .7); }
+  #countdown { display: block; margin-top: 10px; padding: 14px 4px; font-size: 34px; }
 
   /* 오류 창 */
   .alert { display: flex; align-items: center; gap: 12px; text-align: left; line-height: 1.6; }
-  .alert canvas { width: 48px; height: 48px; flex: none; image-rendering: pixelated; }
+  .alert canvas { width: 44px; height: 44px; flex: none; }
 
   /* 지뢰찾기 */
-  .mine-top { display: flex; align-items: center; justify-content: space-between; padding: 6px; margin-bottom: 10px; border: 2px solid; border-color: #666 #fff #fff #666; }
-  .mine-top .led { padding: 3px 6px; font-size: 22px; }
-  #face { width: 38px; height: 38px; padding: 0; font-size: 20px; }
+  #mineWin .body { background: #c0c0c0; }
+  .mine-top { display: flex; align-items: center; justify-content: space-between; padding: 6px; margin-bottom: 10px; border: 2px solid; border-color: #808080 #fff #fff #808080; }
+  .mine-top .led { padding: 5px 6px; font-size: 20px; }
+  #face { min-width: 0; width: 38px; height: 38px; padding: 0; font-size: 20px; }
   .board { display: grid; grid-template-columns: repeat(8, 30px); justify-content: center; }
   .cell {
-    width: 30px; height: 30px; font: bold 15px Galmuri11, monospace; background: #c3c7cb; cursor: pointer;
-    border: 3px solid; border-color: #fff #666 #666 #fff; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+    width: 30px; height: 30px; font: bold 15px var(--ui); background: #c0c0c0; cursor: pointer;
+    border: 3px solid; border-color: #fff #808080 #808080 #fff; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
   }
-  .cell.open { border: 1px solid #888; cursor: default; }
+  .cell:active { border-width: 1px; }
+  .cell.open { border: 1px solid #909090; cursor: default; }
   .cell.boom { background: #ff2b1c; }
-  #flagMode[aria-pressed="true"] { border-color: #222 #fff #fff #222; background: #fff; }
+  #flagMode[aria-pressed="true"] { background: #c9ddff; box-shadow: inset 1px 1px 3px rgba(0, 0, 0, .35); }
   #mineText { margin-top: 8px; }
 
   /* 로딩 */
-  .progress { display: flex; gap: 2px; height: 28px; margin: 12px 0; padding: 2px; }
-  .progress i { flex: 1; background: transparent; }
-  .progress i.on { background: #0a1f9c; }
+  .progress { display: flex; gap: 2px; height: 22px; margin: 12px 0; padding: 3px; border-radius: 5px; border-color: #686868; }
+  .progress i { flex: 1; }
+  .progress i.on { background: linear-gradient(#c8f5c9, #31d23a 45%, #28c231 65%, #9be89f); }
 
   /* 스티커 */
   .sticker {
-    position: absolute; z-index: 2; width: var(--s, 64px); height: var(--s, 64px);
-    image-rendering: pixelated; cursor: grab; touch-action: none;
-    filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, .25));
-    animation: float 2.4s steps(4) infinite alternate;
+    position: absolute; z-index: 2; width: var(--s, 64px); height: var(--s, 64px); cursor: grab; touch-action: none;
+    filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, .35));
+    animation: float 2.4s ease-in-out infinite alternate;
   }
   @keyframes float { to { transform: translateY(-8px); } }
 
   /* 설문 */
-  #pollResult:not(:empty) { margin-top: 14px; font: 30px Galmuri14, monospace; color: #e0197d; }
+  #pollResult:not(:empty) { margin-top: 14px; font: 800 28px var(--title); color: #e0197d; }
   #scare { position: fixed; inset: 0; z-index: 3000; background: #000; }
   #chase { width: 100%; height: 100%; display: block; }
-  #scareClose { position: absolute; top: 12px; right: 12px; width: 36px; height: 32px; font-size: 20px; }
+  #scareClose { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; font-size: 22px; }
   #scareEnd { position: absolute; inset: auto 0 12%; display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  #scareEnd p { font: 34px Galmuri14, monospace; color: #ff2b1c; }
+  #scareEnd p { font: 800 32px var(--title); color: #ff2b1c; }
   #scareEnd .buttons { margin-top: 0; }
 
   /* 넓은 화면에서만 보이는 바닥 스티커 */
@@ -143,12 +134,23 @@
 
   /* 작업 표시줄 */
   .taskbar {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; display: flex; justify-content: space-between; gap: 8px;
-    padding: 4px 4px calc(4px + env(safe-area-inset-bottom)); background: #c3c7cb; border-top: 2px solid #fff;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: stretch;
+    height: calc(40px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
+    background: linear-gradient(#1f2f86, #3165c4 3%, #4490e6 9%, #2b71e0 15%, #235bd6 22%, #245ddb 55%, #2563e0 87%, #1d4fb8 95%, #1941a5);
   }
-  #start { display: flex; align-items: center; gap: 6px; padding: 4px 12px; font-weight: bold; }
-  #start canvas { width: 24px; height: 24px; image-rendering: pixelated; }
-  #clock { display: grid; place-items: center; padding: 0 12px; border: 2px solid; border-color: #666 #fff #fff #666; }
+  #start {
+    display: flex; align-items: center; gap: 7px; padding: 0 26px 0 12px; border: 0; border-radius: 0 16px 16px 0; cursor: pointer;
+    color: #fff; font: italic bold 18px var(--title); text-shadow: 1px 1px 2px rgba(0, 0, 0, .6);
+    background: linear-gradient(#37822f, #6fc065 8%, #429b3d 22%, #3a963a 70%, #4aad45 88%, #25611f);
+    box-shadow: inset -6px 0 10px rgba(0, 0, 0, .25), 2px 0 4px rgba(0, 0, 0, .35);
+  }
+  #start:hover { filter: brightness(1.1); }
+  #start canvas { width: 24px; height: 24px; }
+  #clock {
+    display: grid; place-items: center; padding: 0 16px; color: #fff; border-left: 1px solid #092e8c;
+    background: linear-gradient(#0c59b9, #18b5f2 9%, #1290e8 20%, #0d8dea 63%, #1393ee 90%, #095bc9);
+    box-shadow: inset 1px 0 1px #18bbff;
+  }
 
   #confetti { position: fixed; inset: 0; z-index: 2000; pointer-events: none; }
 
@@ -274,7 +276,7 @@
 </div>
 
 <footer class="taskbar">
-  <button class="btn" id="start"><canvas data-emoji="🎂"></canvas>시작</button>
+  <button id="start"><canvas data-emoji="🎂"></canvas>시작</button>
   <span id="clock"></span>
 </footer>
 <canvas id="confetti"></canvas>
@@ -324,33 +326,17 @@
   tick();
   setInterval(tick, 250);
 
-  // 이모지를 픽셀 아트 스티커로 그리기
-  function pixelate(canvas) {
-    const n = 32;
+  // 이모지 스티커 그리기
+  function sticker(canvas) {
+    const n = 128;
     canvas.width = canvas.height = n;
-    const g = canvas.getContext('2d', { willReadFrequently: true });
-    g.font = '26px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
+    const g = canvas.getContext('2d');
+    g.font = '104px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
     g.textAlign = 'center';
     g.textBaseline = 'middle';
-    g.fillText(canvas.dataset.emoji, n / 2, n / 2 + 1);
-    const img = g.getImageData(0, 0, n, n);
-    const d = img.data;
-    const solid = (x, y) => x >= 0 && y >= 0 && x < n && y < n && d[(y * n + x) * 4 + 3] > 110;
-    const mask = Array.from({ length: n * n }, (_, i) => solid(i % n, Math.floor(i / n)));
-    for (let i = 0; i < n * n; i++) {
-      const x = i % n, y = Math.floor(i / n), p = i * 4;
-      if (mask[i]) {
-        for (let c = 0; c < 3; c++) d[p + c] = Math.round(d[p + c] / 51) * 51;
-        d[p + 3] = 255;
-      } else {
-        const edge = (x > 0 && mask[i - 1]) || (x < n - 1 && mask[i + 1]) || mask[i - n] || mask[i + n];
-        d[p] = d[p + 1] = d[p + 2] = 0;
-        d[p + 3] = edge ? 255 : 0;
-      }
-    }
-    g.putImageData(img, 0, 0);
+    g.fillText(canvas.dataset.emoji, n / 2, n / 2 + 4);
   }
-  document.querySelectorAll('canvas[data-emoji]').forEach(pixelate);
+  document.querySelectorAll('canvas[data-emoji]').forEach(sticker);
 
   // 창과 스티커 끌어서 옮기기
   let top_ = 10;
@@ -419,7 +405,7 @@
       p.x += p.vx;
       p.y += p.vy;
       ctx.fillStyle = p.color;
-      ctx.fillRect(Math.round(p.x / 4) * 4, Math.round(p.y / 4) * 4, p.size, p.size);
+      ctx.fillRect(p.x, p.y, p.size, p.size * .6);
     }
     pieces = pieces.filter(p => p.y < canvas.height + 20);
     running = pieces.length > 0;
@@ -654,7 +640,7 @@
     fx.fillStyle = 'rgba(0, 0, 0, .22)';
     for (let line = 0; line < h; line += 4) fx.fillRect(0, line, w, 1);
 
-    fx.font = `${Math.round(u * .045)}px Galmuri11, monospace`;
+    fx.font = `${Math.round(u * .045)}px Tahoma, monospace`;
     fx.fillStyle = '#fff';
     fx.fillText(`11.27  00:00:0${Math.floor(t)}`, u * .05, h - u * .05);
     fx.fillText('REC', u * .1, u * .085);
