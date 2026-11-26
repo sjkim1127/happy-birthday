@@ -65,10 +65,6 @@
   #flagMode[aria-pressed="true"] { background: #c9ddff; box-shadow: inset 1px 1px 3px rgba(0, 0, 0, .35); }
   #mineText { margin-top: 8px; }
 
-  /* 로딩 */
-  .progress { display: flex; gap: 2px; height: 22px; margin: 12px 0; padding: 3px; border-radius: 5px; }
-  .progress i { flex: 1; }
-
   /* 설문 */
   #pollResult:not(:empty) { margin-top: 14px; font: 800 28px var(--ui); color: #e0197d; }
   #scare { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; border: 0; background: #000; }
@@ -80,7 +76,7 @@
   #scareEnd .buttons { margin-top: 0; }
 
 </style>
-<link rel="stylesheet" href="desktop.css?v=2">
+<link rel="stylesheet" href="desktop.css?v=3">
 </head>
 <body>
 <picture class="wallpaper" aria-hidden="true">
@@ -186,20 +182,6 @@
         <div class="board" id="board"></div>
         <p id="mineText" aria-live="polite">지뢰를 피해서 선물을 지켜라!</p>
         <div class="buttons"><button class="btn" id="flagMode" aria-pressed="false"><img class="icon" src="assets/icons/flag_24_color.svg" alt="" draggable="false">깃발 모드</button></div>
-      </div>
-    </section>
-
-    <section class="window" id="loadWin">
-      <div class="titlebar">
-        <img class="icon app-icon" src="assets/icons/arrow_download_24_regular.svg" alt="" draggable="false">
-        <h2 tabindex="-1" data-shortcut="다운로드">다운로드</h2>
-        <button class="ctl minimize" aria-label="창 최소화"><img class="icon" src="assets/icons/subtract_16_regular.svg" alt="" draggable="false"></button>
-        <button class="ctl close" aria-label="창 닫기"><img class="icon" src="assets/icons/dismiss_16_regular.svg" alt="" draggable="false"></button>
-      </div>
-      <div class="body">
-        <p id="loadText">행복 다운로드 중... 0%</p>
-        <div class="progress sunken" id="progress" role="progressbar" aria-label="행복 다운로드" aria-valuenow="0"></div>
-        <button class="btn" id="reload">다시 받기</button>
       </div>
     </section>
   </div>
@@ -811,28 +793,6 @@
   });
   newGame();
 
-  // 행복 다운로드
-  const bar = $('progress');
-  for (let i = 0; i < 20; i++) bar.appendChild(document.createElement('i'));
-  let percent, loader;
-  function download() {
-    clearInterval(loader);
-    percent = 0;
-    renderDownload();
-    loader = setInterval(() => {
-      percent += 5;
-      renderDownload();
-      if (percent === 100) clearInterval(loader);
-    }, 350);
-  }
-
-  function renderDownload() {
-    bar.setAttribute('aria-valuenow', percent);
-    [...bar.children].forEach((el, i) => el.classList.toggle('on', i < percent / 5));
-    $('loadText').textContent = percent < 100 ? `행복 다운로드 중... ${percent}%` : '다운로드 완료! 행복 100% 💖';
-  }
-  $('reload').addEventListener('click', download);
-  download();
   tick();
   setInterval(tick, 250);
   burst();
