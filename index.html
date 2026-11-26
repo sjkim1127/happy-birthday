@@ -13,8 +13,7 @@
     src: url('https://cdn.jsdelivr.net/npm/dseg@0.46.0/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff2') format('woff2');
   }
   :root {
-    --ui: Tahoma, Dotum, '돋움', Gulim, '굴림', 'Nanum Gothic', sans-serif;
-    --title: 'Trebuchet MS', Tahoma, Dotum, '돋움', 'Nanum Gothic', sans-serif;
+    --ui: Tahoma, Gulim, '굴림', Dotum, '돋움', 'Nanum Gothic', Arial, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { min-height: 100vh; min-height: 100dvh; overflow-x: hidden; font: 1rem var(--ui); color: #173252; background: #3f7fe0; }
@@ -71,17 +70,17 @@
   .progress i { flex: 1; }
 
   /* 설문 */
-  #pollResult:not(:empty) { margin-top: 14px; font: 800 28px var(--title); color: #e0197d; }
+  #pollResult:not(:empty) { margin-top: 14px; font: 800 28px var(--ui); color: #e0197d; }
   #scare { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; border: 0; background: #000; }
   #scare::backdrop { background: #000; }
   #chase { width: 100%; height: 100%; display: block; }
   #scareClose { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; font-size: 22px; }
   #scareEnd { position: absolute; inset: auto 0 12%; display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  #scareEnd p { font: 800 32px var(--title); color: #ff2b1c; }
+  #scareEnd p { font: 800 32px var(--ui); color: #ff2b1c; }
   #scareEnd .buttons { margin-top: 0; }
 
 </style>
-<link rel="stylesheet" href="desktop.css">
+<link rel="stylesheet" href="desktop.css?v=2">
 </head>
 <body>
 <picture class="wallpaper" aria-hidden="true">
@@ -216,7 +215,9 @@
   <div class="task-inner">
     <button id="start" aria-expanded="false" aria-controls="startPanel"><img class="icon" src="assets/icons/apps_24_color.svg" alt="" draggable="false">시작</button>
     <nav class="task-apps" id="taskApps" aria-label="열린 창"></nav>
-    <time id="clock" title="한국 시간 (KST)"></time>
+    <div class="tray">
+      <time id="clock" title="한국 시간 (KST)"></time>
+    </div>
   </div>
   <div id="startPanel" class="start-panel" hidden>
     <div class="start-heading"><img class="icon" src="assets/icons/gift_24_color.svg" alt="" draggable="false"><strong>생일 바탕화면</strong></div>
@@ -278,12 +279,19 @@
   const start = $('start');
   const startPanel = $('startPanel');
   const windows = [...document.querySelectorAll('.window')];
+  const shortcuts = new Map();
   let frontWindow = null;
 
   function bringForward(win) {
-    frontWindow?.classList.remove('foreground');
+    if (frontWindow) {
+      frontWindow.classList.remove('foreground');
+      shortcuts.get(frontWindow).classList.remove('current');
+    }
     frontWindow = win;
-    win?.classList.add('foreground');
+    if (win) {
+      win.classList.add('foreground');
+      shortcuts.get(win).classList.add('current');
+    }
   }
 
   function draggable(handle, target, isWindow = false) {
@@ -324,7 +332,6 @@
     if (returnFocus) start.focus();
   }
 
-  const shortcuts = new Map();
   for (const win of windows) {
     const titlebar = win.querySelector('.titlebar');
     const title = titlebar.querySelector('h2');
