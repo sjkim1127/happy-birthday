@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>생일 축하해! 🎂</title>
+<meta name="description" content="촛불을 끄고 소원을 빌어보세요">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: 'Jua', system-ui, sans-serif;
+    color: #fff;
+    background: radial-gradient(circle at 50% 20%, #4b2a7b, #1b1038 60%, #0d0820);
+    transition: filter .6s;
+  }
+  main { position: relative; z-index: 2; text-align: center; padding: 24px 16px; }
+  h1 {
+    font-size: clamp(2.4rem, 10vw, 4.8rem);
+    font-weight: 400;
+    word-break: keep-all;
+    text-shadow: 0 4px 24px rgba(255, 120, 190, .6);
+  }
+  h1 span { display: inline-block; animation: bounce 1.6s ease-in-out infinite; }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  #message { margin-top: 12px; font-size: clamp(1rem, 4vw, 1.35rem); color: #ffd9ec; min-height: 1.6em; word-break: keep-all; }
+
+  .cake { position: relative; width: 270px; height: 230px; margin: 28px auto 0; }
+  .layer { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 16px 16px 8px 8px; }
+  .layer::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 26px;
+    border-radius: 16px 16px 0 0;
+    background:
+      radial-gradient(circle at 15px 18px, var(--icing) 15px, transparent 16px) 0 0 / 30px 34px repeat-x,
+      linear-gradient(var(--icing) 18px, transparent 18px);
+  }
+  .bottom { bottom: 14px; width: 250px; height: 82px; background: #c9668f; --icing: #fff1f6; }
+  .top { bottom: 94px; width: 180px; height: 64px; background: #f09ab8; --icing: #fff8e1; }
+  .plate { position: absolute; bottom: 0; left: 0; width: 100%; height: 16px; border-radius: 50%; background: #d9d3ee; }
+
+  .candles { position: absolute; bottom: 156px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; }
+  .candle { position: relative; width: 28px; height: 74px; border: 0; background: none; cursor: pointer; }
+  .candle::after {
+    content: ''; position: absolute; bottom: 0; left: 9px; width: 10px; height: 46px; border-radius: 3px;
+    background: repeating-linear-gradient(45deg, #fff 0 5px, var(--c) 5px 10px);
+  }
+  .flame {
+    position: absolute; bottom: 48px; left: 7px; width: 14px; height: 22px;
+    border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+    background: radial-gradient(circle at 50% 70%, #fff7b0, #ffb02e 55%, #ff5a36);
+    box-shadow: 0 0 18px 6px rgba(255, 170, 50, .65);
+    animation: flicker .35s ease-in-out infinite alternate;
+    transform-origin: bottom center;
+    transition: opacity .25s;
+  }
+  @keyframes flicker { from { transform: scale(1) rotate(-3deg); } to { transform: scale(1.1, .92) rotate(3deg); } }
+  .candle.out .flame { opacity: 0; box-shadow: none; }
+  .candle:focus-visible { outline: 2px dashed #fff; border-radius: 6px; }
+
+  .buttons { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .buttons button {
+    font: inherit; font-size: 1.1rem; color: #2a1650; background: #ffe27a;
+    border: 0; border-radius: 999px; padding: 12px 22px; cursor: pointer;
+    box-shadow: 0 5px 0 #c99f2a; transition: transform .1s, box-shadow .1s;
+  }
+  .buttons button:active { transform: translateY(4px); box-shadow: 0 1px 0 #c99f2a; }
+
+  canvas { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
+  .balloon {
+    position: fixed; bottom: -140px; z-index: 1; width: 60px; height: 76px; border: 0; cursor: pointer;
+    border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%;
+    background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.75), var(--c) 38%);
+    animation: rise var(--t) linear forwards;
+    opacity: .88;
+  }
+  .balloon::after { content: ''; position: absolute; top: 100%; left: 50%; width: 1px; height: 55px; background: rgba(255,255,255,.45); }
+  @keyframes rise { to { transform: translate(var(--x), calc(-100vh - 280px)); } }
+
+  @media (max-height: 640px) { body { overflow: auto; } }
+  @media (prefers-reduced-motion: reduce) { h1 span, .flame { animation: none; } .balloon { display: none; } }
+</style>
+</head>
+<body>
+<main>
+  <h1><span>🎉</span> 생일 축하해! <span style="animation-delay:.3s">🎉</span></h1>
+  <p id="message" aria-live="polite">소원을 빌고 촛불을 눌러서 꺼보세요 ✨</p>
+
+  <div class="cake">
+    <div class="plate"></div>
+    <div class="layer bottom"></div>
+    <div class="layer top"></div>
+    <div class="candles" id="candles"></div>
+  </div>
+
+  <div class="buttons">
+    <button id="song">🎵 노래 듣기</button>
+    <button id="boom">🎊 폭죽 터뜨리기</button>
+    <button id="relight">🕯️ 다시 불 켜기</button>
+  </div>
+</main>
+<canvas id="confetti"></canvas>
+
+<script>
+  const colors = ['#ff6b9d', '#ffd166', '#06d6a0', '#4cc9f0', '#b388ff'];
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const message = document.getElementById('message');
+  const startText = message.textContent;
+
+  // 색종이
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  let pieces = [];
+  let running = false;
+
+  function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+  addEventListener('resize', resize);
+  resize();
+
+  function burst(x = innerWidth / 2, y = innerHeight / 3, count = 150) {
+    if (reduced) return;
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 9;
+      pieces.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 4,
+        size: 5 + Math.random() * 7,
+        rot: Math.random() * Math.PI,
+        spin: (Math.random() - .5) * .3,
+        color: colors[i % colors.length],
+      });
+    }
+    if (!running) { running = true; requestAnimationFrame(draw); }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const p of pieces) {
+      p.vx *= .98;
+      p.vy = p.vy * .98 + .22;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.spin;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+      ctx.restore();
+    }
+    pieces = pieces.filter(p => p.y < canvas.height + 20);
+    running = pieces.length > 0;
+    if (running) requestAnimationFrame(draw);
+  }
+
+  // 촛불
+  const box = document.getElementById('candles');
+  colors.forEach((color, i) => {
+    const candle = document.createElement('button');
+    candle.className = 'candle';
+    candle.style.setProperty('--c', color);
+    candle.setAttribute('aria-label', `${i + 1}번 촛불 끄기`);
+    candle.innerHTML = '<span class="flame"></span>';
+    candle.addEventListener('click', () => {
+      if (candle.classList.contains('out')) return;
+      candle.classList.add('out');
+      const left = box.querySelectorAll('.candle:not(.out)').length;
+      if (left) {
+        message.textContent = `후~ 🌬️ 촛불이 ${left}개 남았어요`;
+      } else {
+        message.textContent = '소원이 꼭 이루어지길! 행복한 하루 보내 🥳';
+        burst(innerWidth * .25, innerHeight * .35);
+        burst(innerWidth * .75, innerHeight * .35);
+        playSong();
+      }
+    });
+    box.appendChild(candle);
+  });
+
+  document.getElementById('relight').addEventListener('click', () => {
+    box.querySelectorAll('.candle').forEach(c => c.classList.remove('out'));
+    message.textContent = startText;
+  });
+  document.getElementById('boom').addEventListener('click', () => burst());
+
+  // 생일 축하 멜로디 (Web Audio)
+  let audio;
+  let playingUntil = 0;
+  function playSong() {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    audio ??= new Ctx();
+    audio.resume();
+    if (audio.currentTime < playingUntil) return;
+    const G = 392, A = 440, B = 493.9, C = 523.3, D = 587.3, E = 659.3, F = 698.5, G2 = 784;
+    const notes = [
+      [G,.75],[G,.25],[A,1],[G,1],[C,1],[B,2],
+      [G,.75],[G,.25],[A,1],[G,1],[D,1],[C,2],
+      [G,.75],[G,.25],[G2,1],[E,1],[C,1],[B,1],[A,2],
+      [F,.75],[F,.25],[E,1],[C,1],[D,1],[C,2],
+    ];
+    const beat = .45;
+    let t = audio.currentTime + .05;
+    for (const [freq, length] of notes) {
+      const dur = length * beat;
+      const osc = audio.createOscillator();
+      const gain = audio.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(.22, t + .02);
+      gain.gain.exponentialRampToValueAtTime(.001, t + dur);
+      osc.connect(gain).connect(audio.destination);
+      osc.start(t);
+      osc.stop(t + dur);
+      t += dur;
+    }
+    playingUntil = t;
+  }
+  document.getElementById('song').addEventListener('click', playSong);
+
+  // 풍선
+  function balloon() {
+    if (document.hidden || reduced) return;
+    const b = document.createElement('button');
+    b.className = 'balloon';
+    b.tabIndex = -1;
+    b.setAttribute('aria-label', '풍선 터뜨리기');
+    b.style.left = Math.random() * 90 + '%';
+    b.style.setProperty('--c', colors[Math.floor(Math.random() * colors.length)]);
+    b.style.setProperty('--t', 9 + Math.random() * 6 + 's');
+    b.style.setProperty('--x', (Math.random() - .5) * 160 + 'px');
+    b.addEventListener('pointerdown', e => { burst(e.clientX, e.clientY, 30); b.remove(); });
+    b.addEventListener('animationend', () => b.remove());
+    document.body.appendChild(b);
+  }
+  setInterval(balloon, 1100);
+  balloon();
+  burst();
+</script>
+</body>
+</html>
